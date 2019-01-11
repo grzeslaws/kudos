@@ -1,0 +1,19 @@
+import styled from "../../theme";
+import LogoSvg from "-!svg-react-loader?name=Icon!src/assets/images/logo.svg";
+import GraphicSvg from "-!svg-react-loader?name=Icon!src/assets/images/be-frank.svg";
+
+export const Wrapper = styled.div`
+    flex: 1;
+`;
+
+export const Logo = styled(LogoSvg)`
+    margin-bottom: ${props => props.theme.spacing.defaultSpacing(4)};
+`;
+
+export const TextDescription = styled.div`
+    font-size: ${props => props.theme.fonts.h3};
+    margin-bottom: ${props => props.theme.spacing.defaultSpacing(4)};
+    font-weight: ${props => props.theme.fonts.fontLight};
+`;
+
+export const Graphic = styled(GraphicSvg)``;
