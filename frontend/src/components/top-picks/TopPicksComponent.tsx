@@ -3,7 +3,6 @@ import { IContext } from "../ProviderContextComponent";
 import wrapperComponent from "../WrapperComponent";
 import { WrapperUser, UserName, KudosNumber, Description, Headline, Wrapper } from "./topPicksStyled";
 
-
 export interface Props {
     context?: IContext;
 }
@@ -29,16 +28,21 @@ class TopPicks extends React.Component<Props> {
         if (!this.props.context) {
             return;
         }
-        return this.props.context.users.sort((a, b) => b.kudosNumber - a.kudosNumber).slice(0, 3).map(u => {
-            return (
-                <WrapperUser key={u.id}>
-                    <UserName>
-                        {u.firstName} {u.lastName}
-                    </UserName>
-                    <KudosNumber><KudosNumber>{u.kudosNumber}</KudosNumber> kudos</KudosNumber>
-                </WrapperUser>
-            );
-        });
+        return this.props.context.users
+            .sort((a, b) => b.kudosNumber - a.kudosNumber)
+            .slice(0, 3)
+            .map(u => {
+                return (
+                    <WrapperUser key={u.id}>
+                        <UserName>
+                            {u.firstName} {u.lastName}
+                        </UserName>
+                        <KudosNumber>
+                            <KudosNumber>{u.kudosNumber}</KudosNumber> kudos
+                        </KudosNumber>
+                    </WrapperUser>
+                );
+            });
     };
 }
 

@@ -10,7 +10,7 @@ import normalize from "./theme/generic/normalize";
 import reset from "./theme/generic/reset";
 import fonts from "./theme/settings/fonts";
 import { Wrapper, Column } from "./indexStyled";
-import { TopPicksComponent } from './components/top-picks/TopPicksComponent';
+import { TopPicksComponent } from "./components/top-picks/TopPicksComponent";
 
 // tslint:disable-next-line:no-unused-expression
 injectGlobal`

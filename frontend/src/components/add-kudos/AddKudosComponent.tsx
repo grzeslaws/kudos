@@ -69,7 +69,7 @@ class AddKudos extends React.Component<Props, State> {
     }
 
     private onChangeUser = (e: React.ChangeEvent<any>) => {
-        if (e.target.value !== "0") {
+        if (e.target.value !== "0" && !this.state.usersKudos.find(u => u === e.target.value)) {
             this.setState({ currentUser: e.target.value, usersKudos: [...this.state.usersKudos, e.target.value] });
         }
     };
@@ -81,13 +81,13 @@ class AddKudos extends React.Component<Props, State> {
     private addKudos = (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         e.target.reset();
-        this.setState({ usersKudos: [] });
         http(endpoints.kudos(), { description: this.state.kudos, uuid: this.state.usersKudos }).then(() => {
             if (this.props.context) {
                 this.props.context.fetchKudos();
                 this.props.context.fetchUsers();
             }
         });
+        this.setState({ usersKudos: [], currentUser: "0" });
     };
 
     private renderAssignedUsers = (): JSX.Element[] => {

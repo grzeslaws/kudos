@@ -3,6 +3,7 @@ import { H2 } from "src/theme/elements/Headings";
 
 export const Wrapper = styled.div`
     margin-bottom: ${props => props.theme.spacing.defaultSpacing(5)};
+    padding-top: ${props => props.theme.spacing.defaultSpacing(10)};
 `;
 
 export const WrapperUser = styled.div`

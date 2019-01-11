@@ -2,11 +2,14 @@ import styled from "..";
 
 interface IButton {
     big?: boolean;
+    revers?: boolean;
+    centered?: boolean;
 }
 
 const Button = styled<IButton, "button">("button")`
-    color: ${props => props.theme.colors.colorWhite()};
-    background-color: ${props => props.theme.colors.colorPrimary(0.8)};
+    color: ${props => props.revers ? props.theme.colors.colorPrimary() : props.theme.colors.colorWhite()};
+    border: 1px solid ${props => props.revers ? props.theme.colors.colorPrimary() : "transparent"};
+    background-color: ${props => props.revers ? "transparent" : props.theme.colors.colorPrimary()};
     font-family: ${props => props.theme.fonts.fontFamilyDefault};
     font-weight: ${props => props.theme.fonts.fontBold};
     padding: ${props => props.theme.spacing.defaultSpacing(0.3) + " " + props.theme.spacing.defaultSpacing(2)};
@@ -14,7 +17,6 @@ const Button = styled<IButton, "button">("button")`
     font-size: ${props => props.theme.fonts.sizeBase}; 
     outline: 0;
     transition: ${props => props.theme.transitions.transitionDefault};
-    border: none;
     display: flex;
     align-items: center;
     line-height: 1;
@@ -24,9 +26,11 @@ const Button = styled<IButton, "button">("button")`
     min-height: ${props => props.theme.spacing.defaultSpacing(4)};
     width: ${props => (props.big ? "100%" : "unset")};
     cursor: pointer;
+    opacity: 0.8;
+    ${props => props.centered ? "margin: 0 auto;" : null}
 
     &:hover {
-        background-color: ${props => props.theme.colors.colorPrimary()};
+        opacity: 1;
     }
 `;
 
