@@ -1,11 +1,12 @@
 import styled from "../../theme";
 import { H2 } from "src/theme/elements/Headings";
 import IconPrintSvg from "src/assets/images/icon-print.svg";
+import { Button } from 'src/theme/objects/Buttons';
 
 export const KudosItem = styled.div`
     font-size: ${props => props.theme.fonts.sizeBase};
     font-weight: ${props => props.theme.fonts.fontLight};
-    margin-bottom: ${props => props.theme.spacing.defaultSpacing()};
+    margin-bottom: ${props => props.theme.spacing.defaultSpacing(3)};
     line-height: ${props => props.theme.fonts.lineHeightSmall};
 `;
 
@@ -74,4 +75,8 @@ export const PrintOptionItem = styled.div`
     &:hover {
         opacity: 0.8;
     }
+`;
+
+export const ShowMore = styled(Button)`
+    margin-top: ${props => props.theme.spacing.defaultSpacing(4)};
 `;

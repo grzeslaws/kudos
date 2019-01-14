@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{{ title }}</title>
+        <style>
+            @import url("https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,600,600i&subset=latin-ext");
+            body {
+                font-family: "Montserrat", serif;
+                color: #333333;
+                font-size: 14px;
+                font-weight: 300;
+                margin: 24px;
+            }
+
+            h2 {
+                font-size: 24px;
+                font-weight: 300;
+            }
+
+            .nick {
+                color: #2ba9df;
+                background-color: rgba(146, 221, 255, 0.2);
+                font-size: 14px;
+                border-radius: 2px;
+                margin-right: 4px;
+                min-height: 18px;
+                align-items: center;
+                display: inline-flex;
+                padding-left: 2px;
+                padding-right: 2px;
+                line-height: 1;
+            }
+
+            .kudos-list {
+                margin: 0 0 58px 0;
+                padding: 0 0 8px 0;
+                border-bottom: 1px solid rgba(242, 242, 242, 1);
+            }
+
+            .list-item {
+                list-style: none;
+                margin-bottom: 24px;
+            }
+
+            .date {
+                color: #828282;
+                font-size: 8px;
+                margin-bottom: 8px;
+            }
+
+            .user-name {
+                font-weight: 600;
+            }
+
+            .users-list {
+                margin: 0;
+                padding: 0;
+            }
+
+            .user-item {
+                list-style: none;
+                margin-right: 48px;
+                margin-bottom: 16px;
+                display: inline-block;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Last {{ range }} kudos</h2>
+        <ul class="kudos-list">
+            {% for k in kudos %}
+            <li class="list-item">
+                <div class="date">{{ k.date_string }}</div>
+                {% for u in k.users %} <span class="nick">@{{ u.nick }}</span> {% endfor %}
+
+                {{ k.description }}
+            </li>
+            {% endfor %}
+        </ul>
+        <h2>Top picks last {{ range }}</h2>
+        <ul class="users-list">
+            {% for u in users %} {% if u.kudos | length > 0 %}
+            <li class="user-item">
+                <div class="user-name">{{ u.first_name }} {{ u.last_name }}</div>
+                <div>{{ u.kudos | length }} kudos</div>
+            </li>
+            {% endif %} {% endfor %}
+        </ul>
+    </body>
+</html>

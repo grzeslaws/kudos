@@ -11,6 +11,10 @@ const Form = styled.form`
     background-image: url(${props => props.theme.paths.imagePath("logo.svg")});
 `;
 
+const WrapperInput = styled.div`
+    position: relative;
+`;
+
 const Input = styled.input`
     border: 1px solid ${props => props.theme.colors.colorGrayLight()};
     border-radius: ${props => props.theme.radius.defaultRadius};
@@ -34,6 +38,7 @@ const Input = styled.input`
 
 const TextArea = styled(Input.withComponent("textarea"))`
     min-height: ${props => props.theme.spacing.defaultSpacing(13)};
+    margin-bottom: unset;
 `;
 
 const WrapperSelect = styled(Input.withComponent("div"))`
@@ -95,4 +100,4 @@ const Select = styled<Select, "select">("select")`
     }};
 `;
 
-export { Form, TextArea, WrapperSelect, Select };
+export { Form, TextArea, WrapperSelect, Select, WrapperInput };

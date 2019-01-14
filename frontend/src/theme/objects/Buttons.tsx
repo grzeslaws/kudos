@@ -4,6 +4,7 @@ interface IButton {
     big?: boolean;
     revers?: boolean;
     centered?: boolean;
+    hide?: boolean;
 }
 
 const Button = styled<IButton, "button">("button")`
@@ -17,7 +18,7 @@ const Button = styled<IButton, "button">("button")`
     font-size: ${props => props.theme.fonts.sizeBase}; 
     outline: 0;
     transition: ${props => props.theme.transitions.transitionDefault};
-    display: flex;
+    display: ${props => !props.hide ? "flex" : "none"};
     align-items: center;
     line-height: 1;
     justify-content: center;
@@ -27,6 +28,7 @@ const Button = styled<IButton, "button">("button")`
     width: ${props => (props.big ? "100%" : "unset")};
     cursor: pointer;
     opacity: 0.8;
+    margin-top: ${props => props.theme.spacing.defaultSpacing()};
     ${props => props.centered ? "margin: 0 auto;" : null}
 
     &:hover {

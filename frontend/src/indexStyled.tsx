@@ -1,5 +1,6 @@
 import styled from "./theme";
 import { H2 } from "./theme/elements/Headings";
+import { media } from "./theme/tools/utils";
 
 interface IColumn {
     isKudosList?: boolean;
@@ -18,6 +19,16 @@ export const Wrapper = styled.div`
     flex: 1;
     max-height: 100vh;
     position: relative;
+
+    ${media.desktop`
+        flex-direction: column;
+        max-height: unset;
+        padding: 80px;
+    `}
+
+    ${media.mobile`
+        padding: 20px;
+    `}
 `;
 
 export const Column = styled<IColumn, "div">("div")`
@@ -46,4 +57,9 @@ export const Column = styled<IColumn, "div">("div")`
             outline: 0;
         }
     }
+
+    ${media.desktop`
+        margin-right: unset;
+        margin-top: unset;
+    `}
 `;

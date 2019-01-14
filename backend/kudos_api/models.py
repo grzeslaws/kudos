@@ -1,7 +1,4 @@
 from kudos_api import db, generate_uuid
-import time
-from datetime import timezone, datetime
-
 from sqlalchemy import desc
 
 kudos_related = db.Table("kudos_related",
@@ -23,7 +20,11 @@ class User(db.Model):
     nick = db.Column(db.String(80), nullable=True)
     email = db.Column(db.String(80), nullable=True)
     kudos = db.relationship("Kudos", secondary=kudos_related,
-                            backref=db.backref("users", lazy="dynamic"))
+                            backref=db.backref("users", lazy="subquery"))
+
+    @classmethod
+    def get_top_pick(self):
+        return self.query.limit(3).all()
 
 
 class Kudos(db.Model):
@@ -33,6 +34,7 @@ class Kudos(db.Model):
     kuid = db.Column(db.String(100), unique=True, default=generate_uuid)
     description = db.Column(db.Text, nullable=True)
     timestamp = db.Column(db.Integer, nullable=False)
+    date_string = db.Column(db.String(50))
 
     @classmethod
     def order_by_timestamp(self, page):

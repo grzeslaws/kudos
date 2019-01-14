@@ -38,7 +38,14 @@ const paths = {
     imagePath: (path: string) => `/assets/images/${path}`,
 };
 
-export { colors, spacing, radius, fonts, transitions, paths };
+const breakpoints = {
+    huge: "1440px",
+    large: "1170px",
+    medium: "768px",
+    small: "450px",
+};
+
+export { colors, spacing, radius, fonts, transitions, paths, breakpoints };
 
 export interface ThemeProps {
     colors: typeof colors;
@@ -47,4 +54,5 @@ export interface ThemeProps {
     fonts: typeof fonts;
     transitions: typeof transitions;
     paths: typeof paths;
+    breakpoints: typeof breakpoints;
 }

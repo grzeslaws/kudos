@@ -13,4 +13,5 @@ export const themeProps = {
     fonts: settings.fonts,
     transitions: settings.transitions,
     paths: settings.paths,
+    breakpoints: settings.breakpoints,
 };

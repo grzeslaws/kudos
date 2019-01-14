@@ -18,7 +18,6 @@ def kudos_item(k):
     kudos_item = {}
 
     kudos_users = []
-    kudos_user = {}
 
     kudos_item["id"] = k.id
     kudos_item["kuid"] = k.kuid
@@ -27,7 +26,7 @@ def kudos_item(k):
     kudos_item["users"] = kudos_users
 
     for u in k.users:
-        print(len(u.kudos))
+        kudos_user = {}
         kudos_user["id"] = u.id
         kudos_user["uuid"] = u.uuid
         kudos_user["first_name"] = u.first_name
@@ -45,33 +44,33 @@ def init_users():
     db.create_all()
 
     users_list = [
-        {"first_name": "Blicharz", "last_name": "Sławomir", "nick": "slawekb"},
-        {"first_name": "Dakowicz", "last_name": "Tomasz", "nick": "tomekd"},
-        {"first_name": "Dziuba", "last_name": "Przemysław", "nick": "przemekd"},
-        {"first_name": "Fulara", "last_name": "Jerzy", "nick": "jurekf"},
-        {"first_name": "Fulara", "last_name": "Jędrzej", "nick": "jedrek"},
-        {"first_name": "Fulara", "last_name": "Kasia", "nick": "kasia"},
-        {"first_name": "Fulara", "last_name": "Maciej", "nick": "maciekf"},
-        {"first_name": "Kalinowski", "last_name": "Michał", "nick": "michal.kalinowski"},
-        {"first_name": "Kamionowski", "last_name": "Marcin", "nick": "marcink"},
-        {"first_name": "Krasowski", "last_name": "Marek", "nick": "marekk"},
-        {"first_name": "Kręglewski", "last_name": "Michał", "nick": "michal"},
-        {"first_name": "Łowiec", "last_name": "Wojciech", "nick": "wojtekl"},
-        {"first_name": "Madej", "last_name": "Radosław", "nick": "radekm"},
-        {"first_name": "Marciniak", "last_name": "Joanna", "nick": "asiam"},
-        {"first_name": "Nienałtowski", "last_name": "Paweł", "nick": "paweln"},
-        {"first_name": "Pejas", "last_name": "Łukasz", "nick": "lukaszp"},
-        {"first_name": "Piekarczyk", "last_name": "Tomasz", "nick": "tomekp"},
-        {"first_name": "Przybysz", "last_name": "Tomasz", "nick": "tomasz.przybysz"},
-        {"first_name": "Rut", "last_name": "Karolina", "nick": "karolinar"},
-        {"first_name": "Stefek", "last_name": "Mateusz", "nick": "mateuszs"},
-        {"first_name": "Supeł", "last_name": "Grzegorz", "nick": "grzesieks"},
-        {"first_name": "Tomaszczuk", "last_name": "Dominik", "nick": "dominikt"},
-        {"first_name": "Traczyk", "last_name": "Tomasz", "nick": "tomekt"},
-        {"first_name": "Więch", "last_name": "Adrian", "nick": "adrianw"},
-        {"first_name": "Wojnarowski", "last_name": "Piotr", "nick": "piotrekw"},
-        {"first_name": "Wróbel", "last_name": "Grzegorz", "nick": "grzesiekw"},
-        {"first_name": "Żendzian", "last_name": "Angelika", "nick": "angelikaz"},
+        {"last_name": "Blicharz", "first_name": "Sławomir", "nick": "slawekb"},
+        {"last_name": "Dakowicz", "first_name": "Tomasz", "nick": "tomekd"},
+        {"last_name": "Dziuba", "first_name": "Przemysław", "nick": "przemekd"},
+        {"last_name": "Fulara", "first_name": "Jerzy", "nick": "jurekf"},
+        {"last_name": "Fulara", "first_name": "Jędrzej", "nick": "jedrek"},
+        {"last_name": "Fulara", "first_name": "Kasia", "nick": "kasia"},
+        {"last_name": "Fulara", "first_name": "Maciej", "nick": "maciekf"},
+        {"last_name": "Kalinowski", "first_name": "Michał", "nick": "michal.kalinowski"},
+        {"last_name": "Kamionowski", "first_name": "Marcin", "nick": "marcink"},
+        {"last_name": "Krasowski", "first_name": "Marek", "nick": "marekk"},
+        {"last_name": "Kręglewski", "first_name": "Michał", "nick": "michal"},
+        {"last_name": "Łowiec", "first_name": "Wojciech", "nick": "wojtekl"},
+        {"last_name": "Madej", "first_name": "Radosław", "nick": "radekm"},
+        {"last_name": "Marciniak", "first_name": "Joanna", "nick": "asiam"},
+        {"last_name": "Nienałtowski", "first_name": "Paweł", "nick": "paweln"},
+        {"last_name": "Pejas", "first_name": "Łukasz", "nick": "lukaszp"},
+        {"last_name": "Piekarczyk", "first_name": "Tomasz", "nick": "tomekp"},
+        {"last_name": "Przybysz", "first_name": "Tomasz", "nick": "tomasz.przybysz"},
+        {"last_name": "Rut", "first_name": "Karolina", "nick": "karolinar"},
+        {"last_name": "Stefek", "first_name": "Mateusz", "nick": "mateuszs"},
+        {"last_name": "Supeł", "first_name": "Grzegorz", "nick": "grzesieks"},
+        {"last_name": "Tomaszczuk", "first_name": "Dominik", "nick": "dominikt"},
+        {"last_name": "Traczyk", "first_name": "Tomasz", "nick": "tomekt"},
+        {"last_name": "Więch", "first_name": "Adrian", "nick": "adrianw"},
+        {"last_name": "Wojnarowski", "first_name": "Piotr", "nick": "piotrekw"},
+        {"last_name": "Wróbel", "first_name": "Grzegorz", "nick": "grzesiekw"},
+        {"last_name": "Żendzian", "first_name": "Angelika", "nick": "angelikaz"},
     ]
 
     def add_user(u):

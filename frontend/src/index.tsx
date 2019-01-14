@@ -11,6 +11,7 @@ import reset from "./theme/generic/reset";
 import fonts from "./theme/settings/fonts";
 import { Wrapper, Column } from "./indexStyled";
 import { TopPicksComponent } from "./components/top-picks/TopPicksComponent";
+import { SpinnerComponent } from './components/spinner/SpinnerComponent';
 
 // tslint:disable-next-line:no-unused-expression
 injectGlobal`
@@ -37,6 +38,7 @@ ReactDOM.render(
         <ProvideContextComponent>
             <ThemeProvider theme={themeProps}>
                 <Wrapper>
+                    <SpinnerComponent  />
                     <Column>
                         <DescriptionComponent />
                     </Column>
