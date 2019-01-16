@@ -9,7 +9,7 @@ from sqlalchemy import desc
 @app.route("/api/kudos/<int:page>", methods=["POST", "GET"])
 def add_kudos(page):
     if request.method == "GET":
-        kudos = Kudos.query.order_by(desc(Kudos.timestamp)).limit(3 * page).all()
+        kudos = Kudos.query.order_by(desc(Kudos.timestamp)).limit(10 * page).all()
 
         return jsonify({
             "kudos": [kudos_item(k) for k in kudos]
@@ -27,6 +27,3 @@ def add_kudos(page):
         db.session.commit()
 
         return jsonify({"message": "Kudos has been added!"}), 201
-
-
-# int(datetime.now(tz=timezone.utc).timestamp() * 1000)

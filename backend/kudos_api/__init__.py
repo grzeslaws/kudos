@@ -22,3 +22,4 @@ db = SQLAlchemy(app)
 from kudos_api.routes.public import kudos  # noqa: E402, F401
 from kudos_api.routes.public import user  # noqa: E402, F401
 from kudos_api.routes.public import pdf  # noqa: E402, F401
+from kudos_api.routes.public import login  # noqa: E402, F401
