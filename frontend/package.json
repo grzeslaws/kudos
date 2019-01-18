@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/moment-range": "3.1.0",
     "lodash": "4.17.11",
     "moment": "2.23.0",
     "react": "16.6.3",
