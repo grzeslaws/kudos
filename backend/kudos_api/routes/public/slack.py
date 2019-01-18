@@ -1,9 +1,10 @@
 from kudos_api import app, db
 from flask import request, jsonify
 import os
-import pprint
 from slackclient import SlackClient
 from kudos_api.models import User
+from kudos_api.services import add_kudos
+import re
 
 slack_token = os.environ["SLACK_TOKEN"]
 sc = SlackClient(slack_token)
@@ -23,29 +24,20 @@ def init_slack_users():
 
     for u in sc.api_call("users.list")["members"]:
 
-        try:
-            email = u["profile"]["email"]
-            user = User(email=email)
-            user.name = u["name"]
+        profile = u["profile"]
 
-            try:
-                user.uuid = u["uuid"]
-            except KeyError as e:
-                print(e)
+        if profile.get("email"):
+            email = profile.get("email")
 
-            try:
-                user.image = u["profile"]["image_72"]
-            except KeyError as e:
-                print(e)
-
-            try:
-                user.display_name = u["profile"]["real_name_normalized"]
-            except KeyError as e:
-                print(e)
+            user = User(
+                email=email,
+                uuid=u.get("id"),
+                name=u.get("name"),
+                image=profile.get("image_72"),
+                display_name=profile.get("real_name_normalized"),
+            )
 
             db.session.add(user)
-        except KeyError as e:
-            print(e)
 
     db.session.commit()
     return jsonify({"message": "User has been initilized!"})
@@ -54,6 +46,16 @@ def init_slack_users():
 @app.route("/listening", methods=["POST", "GET"])
 def listening():
     if request.method == "POST":
-        pprint.pprint(request.json)
-        return jsonify({"challenge": "dddddddd"}), 201
+        event = request.json.get("event")
+        if event.get("type") == "app_mention":
+            text = event.get("text")
+            pattern_user = re.compile("<@[A-Z, 0-9]{9}>")
+            users_matches = re.findall(pattern_user, text)
+            users_matches = [u[2: -1] for u in users_matches]
+            users = User.query.all()
+            if any(u.uuid in users_matches for u in users):
+                description_kudos = text.split("> ")[-1]
+                add_kudos(description_kudos, users_matches)
+
+        return jsonify({"message": "Kudos has been added!"}), 201
         # return jsonify({"challenge": request.json["challenge"]}), 201

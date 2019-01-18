@@ -15,6 +15,7 @@ const spacing = {
 
 const radius = {
     defaultRadius: "2px",
+    oval: "50px",
 };
 
 const fonts = {

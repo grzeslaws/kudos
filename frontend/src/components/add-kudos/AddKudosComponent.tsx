@@ -48,7 +48,7 @@ class AddKudos extends React.Component<Props, State> {
         const usersInOptionsElement = users.map(u => {
             return (
                 <option key={u.uuid} value={u.uuid}>
-                    {u.firstName} {u.lastName}, @{u.nick}
+                    {u.displayName}, @{u.nick}
                 </option>
             );
         });

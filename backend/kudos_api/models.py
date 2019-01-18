@@ -13,8 +13,7 @@ class User(db.Model):
     __tablename__ = "user"
 
     id = db.Column(db.Integer, primary_key=True)
-    uuid = db.Column(
-        db.String(100), default=generate_uuid)
+    uuid = db.Column(db.String(100), nullable=False)
     name = db.Column(db.String(80), nullable=True)
     display_name = db.Column(db.String(80), nullable=True)
     image = db.Column(db.String(300), nullable=True)

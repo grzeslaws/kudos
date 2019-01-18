@@ -1,7 +1,7 @@
 import * as React from "react";
 import { IContext } from "../ProviderContextComponent";
 import wrapperComponent from "../WrapperComponent";
-import { WrapperUser, UserName, KudosNumber, Description, Headline, Wrapper } from "./topPicksStyled";
+import { WrapperUser, UserName, KudosNumber, Description, Headline, Wrapper, WrapperUserName, UserImage } from "./topPicksStyled";
 
 export interface Props {
     context?: IContext;
@@ -35,12 +35,13 @@ class TopPicks extends React.Component<Props> {
             .map(u => {
                 return (
                     <WrapperUser key={u.id}>
-                        <UserName>
-                            {u.firstName} {u.lastName}
-                        </UserName>
-                        <KudosNumber>
-                            <KudosNumber>{u.kudosNumber}</KudosNumber> kudos
-                        </KudosNumber>
+                        <UserImage src={u.image} />
+                        <WrapperUserName>
+                            <UserName>{u.displayName}</UserName>
+                            <KudosNumber>
+                                <KudosNumber>{u.kudosNumber}</KudosNumber> kudos
+                            </KudosNumber>
+                        </WrapperUserName>
                     </WrapperUser>
                 );
             });

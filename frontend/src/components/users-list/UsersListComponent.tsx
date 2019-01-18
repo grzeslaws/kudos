@@ -15,11 +15,10 @@ class UsersList extends React.Component<Props> {
     }
 
     public render() {
-        console.log(this.props.context);
         const usersList =
             this.props.context && this.props.context.users
                 ? this.props.context.users.map((u: User) => {
-                      return <div key={Math.random()}>{u.firstName}</div>;
+                      return <div key={Math.random()}>{u.displayName}</div>;
                   })
                 : null;
 
