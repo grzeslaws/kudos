@@ -15,9 +15,9 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(
         db.String(100), default=generate_uuid)
-    first_name = db.Column(db.String(80), nullable=True)
-    last_name = db.Column(db.String(80), nullable=True)
-    nick = db.Column(db.String(80), nullable=True)
+    name = db.Column(db.String(80), nullable=True)
+    display_name = db.Column(db.String(80), nullable=True)
+    image = db.Column(db.String(300), nullable=True)
     email = db.Column(db.String(80), nullable=True)
     kudos = db.relationship("Kudos", secondary=kudos_related,
                             backref=db.backref("users", lazy="subquery"))
