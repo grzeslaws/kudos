@@ -3,7 +3,8 @@ export const baseUrl = `${host}/api`;
 
 export const endpoints = {
     kudos: (page = 1) => `${baseUrl}/kudos/${page}`,
-    users: `${baseUrl}/users`,
+    users: (arg = "") => `${baseUrl}/users/${arg}`,
+    topPicks: `${baseUrl}/top_picks`,
     login: `${baseUrl}/login`,
     createPdf: (range: string) => `${baseUrl}/create_pdf/${range}`
 };

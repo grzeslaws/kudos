@@ -3,140 +3,209 @@ import { IContext } from "../ProviderContextComponent";
 import wrapperComponent from "../WrapperComponent";
 import { http } from "../../services/http";
 import { endpoints } from "../../endpoints";
-import { Form, TextArea, WrapperSelect, Select, WrapperInput } from "../../theme/objects/Forms";
-import { WrapperKudosNick, ErrorMessage, RemoveUser } from "./addKudosStyled";
+import { WrapperInput, WrapperInputText, InputPure, Textarea } from "../../theme/objects/Forms";
+import { ErrorMessage, UserItem, UserImage, UserNick, UserDisplayName, WrapperUsers, WrapperKudosNick, RemoveUser } from "./addKudosStyled";
 import { Button } from "../../theme/objects/Buttons";
 import { User } from "../../models/User";
 import { Headline } from "src/indexStyled";
 import { LabelNick } from "src/theme/objects/Labels";
+// import ContentEditable from "react-contenteditable";
+// import { LabelNick } from "src/theme/objects/Labels";
+// import * as jsxToString from "jsx-to-string";
 
 export interface Props {
     context?: IContext;
 }
 
+export type Direction = "ArrowUp" | "ArrowDown" | "Enter" | "Escape" | null;
+
+interface UserKudos {
+    uuId: string;
+    nick: string;
+}
+
 interface State {
-    kudos: string;
-    currentUser: string;
-    usersKudos: string[];
+    textUserKudos: string;
+    descriptionKudos: string;
+    usersKudos: UserKudos[];
     usersKudosErrorMessage: boolean;
     kudosTextErrorMessage: boolean;
+    direction: Direction;
+    indexOfUser: number;
+    focusedInput: boolean;
 }
 
 class AddKudos extends React.Component<Props, State> {
-    public readonly state = {
-        kudos: "",
-        currentUser: "",
-        usersKudos: [],
-        usersKudosErrorMessage: false,
-        kudosTextErrorMessage: false,
+    private static readonly SETTINGS = {
+        hideDelay: 200,
     };
 
-    public componentWillMount() {
-        if (!this.props.context) {
-            return;
-        }
-        this.props.context.fetchUsers();
-    }
+    public readonly state = {
+        textUserKudos: "",
+        descriptionKudos: "",
+        usersKudos: [{ uuId: "", nick: "" }],
+        usersKudosErrorMessage: false,
+        kudosTextErrorMessage: false,
+        direction: null,
+        indexOfUser: 0,
+        focusedInput: false,
+    };
 
     public render() {
         if (!this.props.context) {
             return;
         }
 
-        const { users } = this.props.context;
+        const usersList =
+            this.props.context && this.props.context.users
+                ? this.props.context.users.map((u: User, i: number) => {
+                      return (
+                          <UserItem
+                              key={u.uuid}
+                              selected={i === this.state.indexOfUser}
+                              onClick={() => this.onClick(u.uuid)}
+                              onMouseEnter={() => this.onMouseOver(i)}>
+                              <UserImage src={u.image} />
+                              <UserNick>@{u.nick}</UserNick>
+                              <UserDisplayName>{u.displayName}</UserDisplayName>
+                          </UserItem>
+                      );
+                  })
+                : null;
 
-        const usersInOptionsElement = users.map(u => {
-            return (
-                <option key={u.uuid} value={u.uuid}>
-                    {u.displayName}, @{u.nick}
-                </option>
-            );
-        });
         return (
             <>
                 <Headline>Give kudos</Headline>
-                <Form onSubmit={this.addKudos}>
-                    <WrapperInput>
-                        <WrapperSelect>
-                            <Select onChange={this.onChangeUser} value={this.state.currentUser}>
-                                <option key={0} value={0}>
-                                    My kudos goes to...
-                                </option>
-                                {usersInOptionsElement}
-                            </Select>
-                        </WrapperSelect>
-                        <ErrorMessage show={this.state.usersKudosErrorMessage}>Choose who are you giving kudos to</ErrorMessage>
-                    </WrapperInput>
-                    <WrapperKudosNick show={this.state.usersKudos.length > 0}>{this.renderAssignedUsers()}</WrapperKudosNick>
-                    <WrapperInput>
-                        <TextArea onChange={this.onChangeDescription} value={this.state.kudos} placeholder="What I most appreciated is..." />
-                        <ErrorMessage show={this.state.kudosTextErrorMessage}>Write some kudos</ErrorMessage>
-                    </WrapperInput>
-                    <Button big={true}>Send Kudos</Button>
-                </Form>
+                <WrapperInput>
+                    <WrapperInputText focused={this.state.focusedInput} onKeyDown={this.onKeyPress}>
+                        <WrapperKudosNick show={this.state.usersKudos.length > 0}>{this.renderAssignedUsers()}</WrapperKudosNick>{" "}
+                        <InputPure value={this.state.textUserKudos} onChange={this.onChange} onBlur={this.onBlur} onFocus={this.onFocus} placeholder="My kudos goes to @..." />
+                    </WrapperInputText>
+                    <WrapperUsers show={this.props.context.users.length > 0}>{usersList}</WrapperUsers>
+                    <ErrorMessage show={this.state.usersKudosErrorMessage}>Choose who are you giving kudos to</ErrorMessage>
+                </WrapperInput>
+                <WrapperInput>
+                    <Textarea value={this.state.descriptionKudos} onChange={this.onChangeDescription} placeholder="What I most appreciated is..." />
+                    <ErrorMessage show={this.state.kudosTextErrorMessage}>Write some kudos</ErrorMessage>
+                </WrapperInput>
+                <Button onClick={this.addKudos} big={true}>
+                    Send Kudos
+                </Button>
             </>
         );
     }
 
-    private onChangeUser = (e: React.ChangeEvent<any>) => {
-        if (e.target.value !== "0" && !this.state.usersKudos.find(u => u === e.target.value)) {
-            this.setState({ currentUser: e.target.value, usersKudos: [...this.state.usersKudos, e.target.value], usersKudosErrorMessage: false });
+    private onFocus = () => {
+        this.setState({focusedInput: true})
+    }
+
+    private hideUserList = () => {
+        setTimeout(() => {
+            if (this.props.context) {
+                this.props.context.fetchUsers("");
+            }
+        }, AddKudos.SETTINGS.hideDelay);
+    };
+
+    private onMouseOver = (index: number) => {
+        this.setState({ indexOfUser: index });
+    };
+
+    private onClick = (uuId: string) => {
+        this.selectUsers(uuId);
+    };
+
+    private onBlur = () => {
+        this.hideUserList();
+        this.setState({focusedInput: false})
+    };
+
+    private selectUsers = (uuId: string) => {
+        const isUserAdded = this.state.usersKudos.find((u: UserKudos) => u.uuId === uuId);
+        if (!isUserAdded && this.props.context) {
+            const selectedUser: User | undefined = this.props.context.users.find(u => u.uuid === uuId);
+            if (selectedUser && selectedUser.uuid && selectedUser.nick) {
+                this.setState({
+                    usersKudos: [...this.state.usersKudos, { uuId: selectedUser.uuid, nick: selectedUser.nick }],
+                    textUserKudos: "",
+                });
+            }
         }
+    };
+
+    private onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "ArrowDown") {
+            this.setState({ indexOfUser: this.state.indexOfUser + 1 });
+        } else if (e.key === "ArrowUp") {
+            this.setState({ indexOfUser: this.state.indexOfUser - 1 });
+        } else if (e.key === "Escape" && this.props.context) {
+            this.hideUserList();
+        } else if (e.key === "Enter" && this.props.context) {
+            this.selectUsers(this.props.context.users[this.state.indexOfUser].uuid);
+            this.hideUserList();
+        }
+    };
+
+    private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!this.props.context) {
+            return;
+        }
+        this.setState({ textUserKudos: e.target.value, usersKudosErrorMessage: false });
+        this.props.context.fetchUsers(e.target.value);
     };
 
     private onChangeDescription = (e: React.ChangeEvent<any>) => {
-        this.setState({ kudos: e.target.value, kudosTextErrorMessage: false });
+        this.setState({ descriptionKudos: e.target.value, kudosTextErrorMessage: false });
     };
 
-    private addKudos = (e: React.ChangeEvent<HTMLFormElement>) => {
+    private addKudos = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        if (this.state.usersKudos.length < 1) {
+        console.log(this.state.usersKudos)
+
+        if (this.state.usersKudos.length < 2) {
             this.setState({ usersKudosErrorMessage: true });
         }
 
-        if (!this.state.kudos) {
+        if (!this.state.descriptionKudos) {
             this.setState({ kudosTextErrorMessage: true });
         }
 
-        if (this.state.usersKudos.length < 1 || !this.state.kudos) {
+        if (this.state.usersKudos.length < 2 || !this.state.descriptionKudos) {
             return;
         }
 
-        if (this.props.context) {
-            this.props.context.setSpinner(true);
-        }
+        const payload = {
+            description: this.state.descriptionKudos,
+            uuid: this.state.usersKudos.map(u => u.uuId),
+        };
 
-        http(endpoints.kudos(), { description: this.state.kudos, uuid: this.state.usersKudos }).then(() => {
+        http(endpoints.kudos(), payload).then(() => {
             if (this.props.context) {
                 this.props.context.fetchKudos();
-                this.props.context.fetchUsers();
-                this.setState({ usersKudos: [], currentUser: "0", kudos: "" });
+                this.setState({ usersKudos: [{ uuId: "", nick: "" }], descriptionKudos: "" });
                 this.props.context.setSpinner(false);
             }
         });
     };
 
     private renderAssignedUsers = (): JSX.Element[] | null => {
-        return this.state.usersKudos.map(u => {
-            if (!this.props.context) {
-                return <div key={Math.random()} />;
-            }
-            const assignedUser: User | undefined = this.props.context.users.find(user => u === user.uuid);
-            if (assignedUser) {
+        if (!this.props.context) {
+            return null;
+        }
+        return this.state.usersKudos
+            .filter(u => u.uuId !== "")
+            .map(u => {
                 return (
-                    <LabelNick key={assignedUser.uuid}>
-                        {assignedUser.nick}
-                        <RemoveUser onClick={() => this.removeUser(assignedUser.uuid)}>x</RemoveUser>
+                    <LabelNick key={u.uuId}>
+                        {u.nick}
+                        <RemoveUser onClick={() => this.removeUser(u.uuId)}>x</RemoveUser>
                     </LabelNick>
                 );
-            } else {
-                return <div key={Math.random()} />;
-            }
-        });
+            });
     };
 
-    private removeUser = (uuId: string) => this.setState({ usersKudos: this.state.usersKudos.filter(u => u !== uuId) });
+    private removeUser = (uuId: string) => this.setState({ usersKudos: this.state.usersKudos.filter(u => u.uuId !== uuId) });
 }
 
 export const AddKudosComponent = wrapperComponent(AddKudos);

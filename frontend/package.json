@@ -3,16 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "jsx-to-string": "^1.4.0",
     "lodash": "4.17.11",
     "moment": "2.23.0",
     "react": "16.6.3",
+    "react-contenteditable": "^3.2.6",
     "react-dom": "16.6.3",
-    "react-google-login": "4.0.1",
     "sparkson": "1.2.3",
     "styled-components": "3.4.9"
   },
   "devDependencies": {
     "@types/jest": "23.3.10",
+    "@types/lodash": "^4.14.120",
     "@types/node": "10.12.14",
     "@types/react": "16.7.17",
     "@types/react-dom": "16.0.11",

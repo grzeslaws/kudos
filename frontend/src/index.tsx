@@ -13,7 +13,7 @@ import { Wrapper, Column } from "./indexStyled";
 import { TopPicksComponent } from "./components/top-picks/TopPicksComponent";
 import { SpinnerComponent } from './components/spinner/SpinnerComponent';
 
-// tslint:disable-next-line:no-unused-expression
+// tslint:disable-next-line:no-unused-expression 
 injectGlobal`
     ${fonts}
     ${boxSizing}

@@ -42,6 +42,24 @@ const hoverOpacity = () => {
     `;
 };
 
+const customScrollBar = (props) => {
+    return `margin-right: unset;
+            overflow: auto;
+
+            ::-webkit-scrollbar {
+                width: ${props.theme.spacing.defaultSpacing(0.5)};
+            }
+
+            ::-webkit-scrollbar-track {
+                background-color: transparent;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background-color: ${props.theme.colors.colorGray(0.1)};
+                outline: 0;
+            }`;
+};
+
 export const media = {
     desktop: function desktop<P>(strings: TemplateStringsArray, ...interpolations: Array<Interpolation<P>>) {
         return css`
@@ -60,4 +78,4 @@ export const media = {
     },
 };
 
-export { placeholder, hoverOpacity };
+export { placeholder, hoverOpacity, customScrollBar };

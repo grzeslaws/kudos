@@ -9,9 +9,11 @@ import { KudosList } from "src/models/KudosList";
 export interface IContext {
     kudos: KudosList | null;
     users: User[];
+    topPicks: User[];
     showSpinner: boolean;
     fetchKudos: (page?: number) => void;
-    fetchUsers: () => void;
+    fetchUsers: (arg: string) => void;
+    fetchTopPicks: () => void;
     createPdf: (range: string) => Promise<{ pdf_url: string }>;
     setSpinner: (setting: boolean) => void;
 }
@@ -22,10 +24,12 @@ class ProviderContextComponent extends React.Component<{}, IContext> {
     public readonly state = {
         kudos: null,
         users: [],
+        topPicks: [],
         showSpinner: false,
         fetchKudos: (page = 1) => this.fetchKudos(page),
         createPdf: (range = "week") => this.createPdf(range),
-        fetchUsers: () => this.fetchUsers(),
+        fetchUsers: (arg: string) => this.fetchUsers(arg),
+        fetchTopPicks: () => this.fetchTopPicks(),
         setSpinner: (setting: boolean) => this.setSpiner(setting),
     };
 
@@ -46,7 +50,8 @@ class ProviderContextComponent extends React.Component<{}, IContext> {
         });
     };
     private createPdf = (range: string) => http(endpoints.createPdf(range));
-    private fetchUsers = () => http(endpoints.users).then(json => (json ? this.setState({ users: parseArray(User, json.users) }) : null));
+    private fetchUsers = (arg: string) => http(endpoints.users(arg)).then(json => (json ? this.setState({ users: parseArray(User, json.users) }) : null));
+    private fetchTopPicks = () => http(endpoints.topPicks).then(json => (json ? this.setState({ topPicks: parseArray(User, json.top_picks) }) : null));
 }
 
 export default ProviderContextComponent;
