@@ -49,7 +49,6 @@ export const IconPrint = styled.div`
     transition: ${props => props.theme.transitions.transitionDefault};
     margin-left: auto;
     position: relative;
-
     &:before {
         content: "";
         background-image: url(${IconPrintSvg});
@@ -57,7 +56,6 @@ export const IconPrint = styled.div`
         height: ${props => props.theme.spacing.defaultSpacing(3)};
         display: block;
     }
-
     &:hover ${PrintOption} {
         display: block;
     }
@@ -67,11 +65,9 @@ export const PrintOptionItem = styled.div`
     margin-bottom: ${props => props.theme.spacing.defaultSpacing(0.5)};
     text-align: right;
     transition: ${props => props.theme.transitions.transitionDefault};
-
     &:last-child {
         margin-bottom: unset;
     }
-
     &:hover {
         opacity: 0.8;
     }

@@ -10,7 +10,7 @@ export interface Props {
 class TopPicks extends React.Component<Props> {
     public componentWillMount() {
         if (this.props.context) {
-            this.props.context.fetchUsers();
+            this.props.context.fetchTopPicks();
         }
     }
 
@@ -28,7 +28,7 @@ class TopPicks extends React.Component<Props> {
         if (!this.props.context) {
             return;
         }
-        return this.props.context.users
+        return this.props.context.topPicks
             .sort((a, b) => b.kudosNumber - a.kudosNumber)
             .filter(u => u.kudosNumber > 0)
             .slice(0, 3)

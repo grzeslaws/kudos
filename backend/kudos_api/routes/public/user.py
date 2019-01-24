@@ -4,8 +4,19 @@ from kudos_api.models import User
 from kudos_api.serializers import user_item
 
 
-@app.route("/api/users", methods=["GET"])
-def get_users():
+@app.route("/api/users/", defaults={"arg": ""})
+@app.route("/api/users/<arg>")
+def get_users(arg):
 
-    users = User.query.all()
-    return jsonify({"users": [user_item(u) for u in users]}), 200
+    if arg is not "":
+        users = User.search(arg)
+        return jsonify({"users": [user_item(u) for u in users]}), 200
+    else:
+        return jsonify({"users": []}), 200
+
+
+@app.route("/api/top_picks", methods=["GET"])
+def top_picks():
+
+    top_picks = User.get_top_pick()
+    return jsonify({"top_picks": [user_item(u) for u in top_picks]}), 200

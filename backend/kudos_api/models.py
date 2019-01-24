@@ -22,8 +22,13 @@ class User(db.Model):
                             backref=db.backref("users", lazy="subquery"))
 
     @classmethod
-    def get_top_pick(self):
-        return self.query.limit(3).all()
+    def get_top_pick(cls):
+        return cls.query.limit(3).all()
+
+    @classmethod
+    def search(cls, arg):
+        return cls.query.filter(db.or_(cls.name.contains(arg)), cls.display_name.contains(arg),
+                                cls.email.contains(arg)).all()
 
 
 class Kudos(db.Model):
@@ -35,6 +40,5 @@ class Kudos(db.Model):
     timestamp = db.Column(db.Integer, nullable=False)
     date_string = db.Column(db.String(50))
 
-    @classmethod
-    def order_by_timestamp(self, page):
-        return self.query.order_by(desc(self.timestamp)).paginate(page=page, per_page=self.per_page)
+    def order_by_timestamp(cls, page):
+        return cls.query.order_by(desc(cls.timestamp)).paginate(page=page, per_page=cls.per_page)
