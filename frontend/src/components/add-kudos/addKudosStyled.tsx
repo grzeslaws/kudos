@@ -1,7 +1,8 @@
 import styled from "../../theme";
 import AlertSvg from "../../assets/images/icon-alert.svg";
 import ArrowErrorMessage from "../../assets/images/icon-arrow-error-message.svg";
-import { customScrollBar } from 'src/theme/tools/utils';
+import { customScrollBar } from "src/theme/tools/utils";
+import LogosSvg from "-!svg-react-loader?name=Icon!src/assets/images/logos.svg";
 
 interface IErrorMessage {
     show?: boolean;
@@ -10,6 +11,18 @@ interface IErrorMessage {
 interface IWrapperKudosNick {
     show?: boolean | null;
 }
+
+interface IWrapperUsers {
+    show?: boolean;
+}
+
+interface IUserItem {
+    selected?: boolean;
+}
+
+export const Logos = styled(LogosSvg)`
+    margin-bottom: ${props => props.theme.spacing.defaultSpacing(4)};
+`;
 
 export const WrapperKudosNick = styled<IWrapperKudosNick, "div">("div")`
     display: ${props => (props.show ? "flex" : "none")};
@@ -58,26 +71,24 @@ export const RemoveUser = styled.span`
     cursor: pointer;
 `;
 
-interface IWrapper {
-    show?: boolean;
-}
-
-interface IUserItem {
-    selected?: boolean;
-}
-
-export const WrapperUsers = styled<IWrapper, "div">("div")`
+export const WrapperUsers = styled<IWrapperUsers, "div">("div")`
     position: absolute;
     left: 0;
-    top: ${props => props.theme.spacing.defaultSpacing(4)};;
-    max-height: ${props => props.theme.spacing.defaultSpacing(40)};
+    top: 36px;
+    max-height: ${props => props.theme.spacing.defaultSpacing(50)};
     background-color: ${props => props.theme.colors.colorGrayLight()};
     z-index: 1;
     width: 100%;
-    display: ${props => props.show ? "block" : "none"};
+    display: ${props => (props.show ? "block" : "none")};
     overflow: auto;
 
     ${props => customScrollBar(props)}
+`;
+
+export const Wrapper = styled.div`
+    max-width: ${props => props.theme.spacing.defaultSpacing(60)};
+    width: 100%;
+    text-align: center;
 `;
 
 export const UserItem = styled<IUserItem, "div">("div")`
@@ -85,7 +96,7 @@ export const UserItem = styled<IUserItem, "div">("div")`
     font-size: ${props => props.theme.fonts.sizeBase};
     align-items: center;
     padding: 2px 12px;
-    background-color: ${props => props.selected ? props.theme.colors.colorGray(0.2) : null};
+    background-color: ${props => (props.selected ? props.theme.colors.colorGray(0.2) : null)};
     cursor: pointer;
 `;
 

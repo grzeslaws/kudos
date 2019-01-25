@@ -4,14 +4,10 @@ import wrapperComponent from "../WrapperComponent";
 import { http } from "../../services/http";
 import { endpoints } from "../../endpoints";
 import { WrapperInput, WrapperInputText, InputPure, Textarea } from "../../theme/objects/Forms";
-import { ErrorMessage, UserItem, UserImage, UserNick, UserDisplayName, WrapperUsers, WrapperKudosNick, RemoveUser } from "./addKudosStyled";
+import { ErrorMessage, UserItem, UserImage, UserNick, UserDisplayName, WrapperUsers, WrapperKudosNick, RemoveUser, Wrapper, Logos } from "./addKudosStyled";
 import { Button } from "../../theme/objects/Buttons";
 import { User } from "../../models/User";
-import { Headline } from "src/indexStyled";
 import { LabelNick } from "src/theme/objects/Labels";
-// import ContentEditable from "react-contenteditable";
-// import { LabelNick } from "src/theme/objects/Labels";
-// import * as jsxToString from "jsx-to-string";
 
 export interface Props {
     context?: IContext;
@@ -74,12 +70,18 @@ class AddKudos extends React.Component<Props, State> {
                 : null;
 
         return (
-            <>
-                <Headline>Give kudos</Headline>
+            <Wrapper>
+                <Logos />
                 <WrapperInput>
                     <WrapperInputText focused={this.state.focusedInput} onKeyDown={this.onKeyPress}>
                         <WrapperKudosNick show={this.state.usersKudos.length > 0}>{this.renderAssignedUsers()}</WrapperKudosNick>{" "}
-                        <InputPure value={this.state.textUserKudos} onChange={this.onChange} onBlur={this.onBlur} onFocus={this.onFocus} placeholder="My kudos goes to @..." />
+                        <InputPure
+                            value={this.state.textUserKudos}
+                            onChange={this.onChange}
+                            onBlur={this.onBlur}
+                            onFocus={this.onFocus}
+                            placeholder="My kudos goes to @..."
+                        />
                     </WrapperInputText>
                     <WrapperUsers show={this.props.context.users.length > 0}>{usersList}</WrapperUsers>
                     <ErrorMessage show={this.state.usersKudosErrorMessage}>Choose who are you giving kudos to</ErrorMessage>
@@ -91,13 +93,13 @@ class AddKudos extends React.Component<Props, State> {
                 <Button onClick={this.addKudos} big={true}>
                     Send Kudos
                 </Button>
-            </>
+            </Wrapper>
         );
     }
 
     private onFocus = () => {
-        this.setState({focusedInput: true})
-    }
+        this.setState({ focusedInput: true });
+    };
 
     private hideUserList = () => {
         setTimeout(() => {
@@ -105,6 +107,7 @@ class AddKudos extends React.Component<Props, State> {
                 this.props.context.fetchUsers("");
             }
         }, AddKudos.SETTINGS.hideDelay);
+        this.setState({ indexOfUser: 0 });
     };
 
     private onMouseOver = (index: number) => {
@@ -117,7 +120,7 @@ class AddKudos extends React.Component<Props, State> {
 
     private onBlur = () => {
         this.hideUserList();
-        this.setState({focusedInput: false})
+        this.setState({ focusedInput: false });
     };
 
     private selectUsers = (uuId: string) => {
@@ -134,9 +137,9 @@ class AddKudos extends React.Component<Props, State> {
     };
 
     private onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "ArrowDown") {
+        if (e.key === "ArrowDown" && this.props.context && this.props.context.users.length - 1 > this.state.indexOfUser) {
             this.setState({ indexOfUser: this.state.indexOfUser + 1 });
-        } else if (e.key === "ArrowUp") {
+        } else if (e.key === "ArrowUp" && this.state.indexOfUser > 0) {
             this.setState({ indexOfUser: this.state.indexOfUser - 1 });
         } else if (e.key === "Escape" && this.props.context) {
             this.hideUserList();
@@ -160,8 +163,6 @@ class AddKudos extends React.Component<Props, State> {
 
     private addKudos = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-
-        console.log(this.state.usersKudos)
 
         if (this.state.usersKudos.length < 2) {
             this.setState({ usersKudosErrorMessage: true });

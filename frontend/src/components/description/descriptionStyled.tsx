@@ -1,14 +1,9 @@
 import styled from "../../theme";
-import LogoSvg from "-!svg-react-loader?name=Icon!src/assets/images/logo.svg";
 import GraphicSvg from "-!svg-react-loader?name=Icon!src/assets/images/be-frank.svg";
-import { media } from 'src/theme/tools/utils';
+import { media } from "src/theme/tools/utils";
 
 export const Wrapper = styled.div`
     flex: 1;
-`;
-
-export const Logo = styled(LogoSvg)`
-    margin-bottom: ${props => props.theme.spacing.defaultSpacing(4)};
 `;
 
 export const TextDescription = styled.div`

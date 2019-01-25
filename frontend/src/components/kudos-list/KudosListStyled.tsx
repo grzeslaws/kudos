@@ -11,17 +11,9 @@ export const KudosItem = styled.div`
 `;
 
 export const HeadlineSticky = styled(H2)`
-    position: sticky;
     background-color: ${props => props.theme.colors.colorGrayLight()};
-    margin-left: ${props => props.theme.spacing.defaultSpacing(-5)};
-    margin-right: ${props => props.theme.spacing.defaultSpacing(-5)};
-    padding-right: ${props => props.theme.spacing.defaultSpacing(5)};
-    padding-left: ${props => props.theme.spacing.defaultSpacing(5)};
-    padding-top: ${props => props.theme.spacing.defaultSpacing(3)};
     padding-bottom: ${props => props.theme.spacing.defaultSpacing(2)};
-    top: 0;
     margin-bottom: ${props => props.theme.spacing.defaultSpacing(2)};
-    z-index: 1;
     display: flex;
 `;
 
