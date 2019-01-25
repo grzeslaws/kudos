@@ -9,11 +9,12 @@ import boxSizing from "./theme/generic/box-sizing";
 import normalize from "./theme/generic/normalize";
 import reset from "./theme/generic/reset";
 import fonts from "./theme/settings/fonts";
-import { Wrapper, Column } from "./indexStyled";
+import { WrapperColumns, Column, WrapperFull, Photos, WrapperMain, Navbar } from "./indexStyled";
 import { TopPicksComponent } from "./components/top-picks/TopPicksComponent";
-import { SpinnerComponent } from './components/spinner/SpinnerComponent';
+import { SpinnerComponent } from "./components/spinner/SpinnerComponent";
+import { ButtonPure } from "./theme/objects/Buttons";
 
-// tslint:disable-next-line:no-unused-expression 
+// tslint:disable-next-line:no-unused-expression
 injectGlobal`
     ${fonts}
     ${boxSizing}
@@ -34,24 +35,30 @@ injectGlobal`
 `;
 
 ReactDOM.render(
-    <>
-        <ProvideContextComponent>
-            <ThemeProvider theme={themeProps}>
-                <Wrapper>
-                    <SpinnerComponent  />
-                    <Column>
+    <ProvideContextComponent>
+        <ThemeProvider theme={themeProps}>
+            <WrapperMain>
+                <SpinnerComponent />
+                <Navbar>
+                    <ButtonPure href="#">Give kudos</ButtonPure>
+                </Navbar>
+                <WrapperFull>
+                    <AddKudosComponent />
+                </WrapperFull>
+                <Photos />
+                <WrapperColumns>
+                    <Column width="1" sticky={true}>
                         <DescriptionComponent />
                     </Column>
-                    <Column>
-                        <AddKudosComponent />
-                    </Column>
-                    <Column isKudosList={true}>
+                    <Column width="1" sticky={true}>
                         <TopPicksComponent />
+                    </Column>
+                    <Column width="3">
                         <KudosListComponent />
                     </Column>
-                </Wrapper>
-            </ThemeProvider>
-        </ProvideContextComponent>
-    </>,
+                </WrapperColumns>
+            </WrapperMain>
+        </ThemeProvider>
+    </ProvideContextComponent>,
     document.getElementById("root") as HTMLElement,
 );
