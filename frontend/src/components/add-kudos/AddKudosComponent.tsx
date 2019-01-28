@@ -3,210 +3,151 @@ import { IContext } from "../ProviderContextComponent";
 import wrapperComponent from "../WrapperComponent";
 import { http } from "../../services/http";
 import { endpoints } from "../../endpoints";
-import { WrapperInput, WrapperInputText, InputPure, Textarea } from "../../theme/objects/Forms";
-import { ErrorMessage, UserItem, UserImage, UserNick, UserDisplayName, WrapperUsers, WrapperKudosNick, RemoveUser, Wrapper, Logos } from "./addKudosStyled";
-import { Button } from "../../theme/objects/Buttons";
+import { WrapperInput, WrapperInputText } from "../../theme/objects/Forms";
+import { ErrorMessage, Wrapper, Logos } from "./addKudosStyled";
+import { SendKudosButton } from "../../theme/objects/Buttons";
 import { User } from "../../models/User";
-import { LabelNick } from "src/theme/objects/Labels";
-
+import { EditorState } from "draft-js";
+import createMentionPlugin, { defaultSuggestionsFilter } from "draft-js-mention-plugin";
+import Editor from "draft-js-plugins-editor";
 export interface Props {
     context?: IContext;
 }
 
 export type Direction = "ArrowUp" | "ArrowDown" | "Enter" | "Escape" | null;
 
-interface UserKudos {
-    uuId: string;
-    nick: string;
-}
-
 interface State {
     textUserKudos: string;
     descriptionKudos: string;
-    usersKudos: UserKudos[];
+    usersKudos: User[];
     usersKudosErrorMessage: boolean;
     kudosTextErrorMessage: boolean;
-    direction: Direction;
     indexOfUser: number;
     focusedInput: boolean;
+    editorState: EditorState;
+    suggestions: User[];
 }
 
 class AddKudos extends React.Component<Props, State> {
-    private static readonly SETTINGS = {
-        hideDelay: 200,
-    };
+    private mentionPlugin: any;
+    private editor: React.RefObject<any> = React.createRef();
+
+    public componentWillMount() {
+        this.mentionPlugin = createMentionPlugin({ mentionPrefix: "@", supportWhitespace: true });
+        this.props.context!.fetchUsers();
+    }
 
     public readonly state = {
         textUserKudos: "",
         descriptionKudos: "",
-        usersKudos: [{ uuId: "", nick: "" }],
+        usersKudos: [new User(0, "", 0)],
         usersKudosErrorMessage: false,
         kudosTextErrorMessage: false,
-        direction: null,
         indexOfUser: 0,
         focusedInput: false,
+        editorState: EditorState.createEmpty(),
+        suggestions: this.props.context!.users,
     };
 
     public render() {
-        if (!this.props.context) {
-            return;
-        }
+        const Entry = props => {
+            const { mention, searchValue, isFocused, ...parentProps } = props;
 
-        const usersList =
-            this.props.context && this.props.context.users
-                ? this.props.context.users.map((u: User, i: number) => {
-                      return (
-                          <UserItem
-                              key={u.uuid}
-                              selected={i === this.state.indexOfUser}
-                              onClick={() => this.onClick(u.uuid)}
-                              onMouseEnter={() => this.onMouseOver(i)}>
-                              <UserImage src={u.image} />
-                              <UserNick>@{u.nick}</UserNick>
-                              <UserDisplayName>{u.displayName}</UserDisplayName>
-                          </UserItem>
-                      );
-                  })
-                : null;
+            return (
+                <div {...parentProps}>
+                    <div>
+                        <div className="mentionSuggestionsEntryContainerLeft">
+                            <img src={mention.image} className="mentionSuggestionsEntryAvatar" role="presentation" />
+                        </div>
+
+                        <div>
+                            <div className="mentionSuggestionsEntryName">@{mention.name}</div>
+                            <div className="mentionSuggestionsDisplayName">{mention.displayName}</div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const { MentionSuggestions } = this.mentionPlugin;
+        const plugins = [this.mentionPlugin];
 
         return (
             <Wrapper>
                 <Logos />
                 <WrapperInput>
-                    <WrapperInputText focused={this.state.focusedInput} onKeyDown={this.onKeyPress}>
-                        <WrapperKudosNick show={this.state.usersKudos.length > 0}>{this.renderAssignedUsers()}</WrapperKudosNick>{" "}
-                        <InputPure
-                            value={this.state.textUserKudos}
+                    <WrapperInputText focused={this.state.focusedInput}>
+                        <Editor
+                            editorState={this.state.editorState}
                             onChange={this.onChange}
-                            onBlur={this.onBlur}
-                            onFocus={this.onFocus}
+                            ref={this.editor}
+                            plugins={plugins}
                             placeholder="My kudos goes to @..."
                         />
+                        <MentionSuggestions
+                            onSearchChange={this.onSearchChange}
+                            suggestions={this.state.suggestions}
+                            onAddMention={this.onAddMention}
+                            entryComponent={Entry}
+                        />
                     </WrapperInputText>
-                    <WrapperUsers show={this.props.context.users.length > 0}>{usersList}</WrapperUsers>
                     <ErrorMessage show={this.state.usersKudosErrorMessage}>Choose who are you giving kudos to</ErrorMessage>
+                    <SendKudosButton onClick={this.addKudos} />
                 </WrapperInput>
-                <WrapperInput>
-                    <Textarea value={this.state.descriptionKudos} onChange={this.onChangeDescription} placeholder="What I most appreciated is..." />
-                    <ErrorMessage show={this.state.kudosTextErrorMessage}>Write some kudos</ErrorMessage>
-                </WrapperInput>
-                <Button onClick={this.addKudos} big={true}>
-                    Send Kudos
-                </Button>
             </Wrapper>
         );
     }
 
-    private onFocus = () => {
-        this.setState({ focusedInput: true });
+    public onSearchChange = ({ value }) => {
+        this.setState({
+            suggestions: defaultSuggestionsFilter(value, this.props.context!.users),
+        });
     };
 
-    private hideUserList = () => {
-        setTimeout(() => {
-            if (this.props.context) {
-                this.props.context.fetchUsers("");
-            }
-        }, AddKudos.SETTINGS.hideDelay);
-        this.setState({ indexOfUser: 0 });
-    };
-
-    private onMouseOver = (index: number) => {
-        this.setState({ indexOfUser: index });
-    };
-
-    private onClick = (uuId: string) => {
-        this.selectUsers(uuId);
-    };
-
-    private onBlur = () => {
-        this.hideUserList();
-        this.setState({ focusedInput: false });
-    };
-
-    private selectUsers = (uuId: string) => {
-        const isUserAdded = this.state.usersKudos.find((u: UserKudos) => u.uuId === uuId);
-        if (!isUserAdded && this.props.context) {
-            const selectedUser: User | undefined = this.props.context.users.find(u => u.uuid === uuId);
-            if (selectedUser && selectedUser.uuid && selectedUser.nick) {
-                this.setState({
-                    usersKudos: [...this.state.usersKudos, { uuId: selectedUser.uuid, nick: selectedUser.nick }],
-                    textUserKudos: "",
-                });
-            }
+    private onChange = (editorState: EditorState) => {
+        this.setState({
+            editorState,
+        });
+        if (this.editor.current && this.editor.current.editor) {
+            console.log(this.editor.current ? this.editor.current.editor.editor.innerHTML : null);
         }
     };
 
-    private onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "ArrowDown" && this.props.context && this.props.context.users.length - 1 > this.state.indexOfUser) {
-            this.setState({ indexOfUser: this.state.indexOfUser + 1 });
-        } else if (e.key === "ArrowUp" && this.state.indexOfUser > 0) {
-            this.setState({ indexOfUser: this.state.indexOfUser - 1 });
-        } else if (e.key === "Escape" && this.props.context) {
-            this.hideUserList();
-        } else if (e.key === "Enter" && this.props.context) {
-            this.selectUsers(this.props.context.users[this.state.indexOfUser].uuid);
-            this.hideUserList();
-        }
-    };
-
-    private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!this.props.context) {
-            return;
-        }
-        this.setState({ textUserKudos: e.target.value, usersKudosErrorMessage: false });
-        this.props.context.fetchUsers(e.target.value);
-    };
-
-    private onChangeDescription = (e: React.ChangeEvent<any>) => {
-        this.setState({ descriptionKudos: e.target.value, kudosTextErrorMessage: false });
+    private onAddMention = e => {
+        this.setState({ usersKudos: [...this.state.usersKudos, e], usersKudosErrorMessage: false });
     };
 
     private addKudos = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
+        const text = this.state.editorState.getCurrentContent().getPlainText();
+
         if (this.state.usersKudos.length < 2) {
             this.setState({ usersKudosErrorMessage: true });
         }
 
-        if (!this.state.descriptionKudos) {
+        if (!text) {
             this.setState({ kudosTextErrorMessage: true });
         }
 
-        if (this.state.usersKudos.length < 2 || !this.state.descriptionKudos) {
+        if (this.state.usersKudos.length < 2 || !text) {
             return;
         }
 
         const payload = {
-            description: this.state.descriptionKudos,
-            uuid: this.state.usersKudos.map(u => u.uuId),
+            description: this.editor.current ? this.editor.current.editor.editor.innerHTML : "",
+            uuid: this.state.usersKudos.map(u => u.uuid),
         };
 
         http(endpoints.kudos(), payload).then(() => {
             if (this.props.context) {
                 this.props.context.fetchKudos();
-                this.setState({ usersKudos: [{ uuId: "", nick: "" }], descriptionKudos: "" });
+                this.props.context.fetchTopPicks();
                 this.props.context.setSpinner(false);
+                this.setState({ editorState: EditorState.createEmpty() });
             }
         });
     };
-
-    private renderAssignedUsers = (): JSX.Element[] | null => {
-        if (!this.props.context) {
-            return null;
-        }
-        return this.state.usersKudos
-            .filter(u => u.uuId !== "")
-            .map(u => {
-                return (
-                    <LabelNick key={u.uuId}>
-                        {u.nick}
-                        <RemoveUser onClick={() => this.removeUser(u.uuId)}>x</RemoveUser>
-                    </LabelNick>
-                );
-            });
-    };
-
-    private removeUser = (uuId: string) => this.setState({ usersKudos: this.state.usersKudos.filter(u => u.uuId !== uuId) });
 }
 
 export const AddKudosComponent = wrapperComponent(AddKudos);

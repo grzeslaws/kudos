@@ -2,8 +2,8 @@ import * as React from "react";
 import { IContext } from "../ProviderContextComponent";
 import wrapperComponent from "../WrapperComponent";
 
-import { LabelNick } from "src/theme/objects/Labels";
-import { User } from "src/models/User";
+// import { LabelNick } from "src/theme/objects/Labels";
+// import { User } from "src/models/User";
 import { KudosItem, HeadlineSticky, DateElement, IconPrint, PrintOption, PrintOptionItem, ShowMore } from "./KudosListStyled";
 
 import * as moment from "moment";
@@ -79,18 +79,11 @@ class KudosList extends React.Component<Props, State> {
                   return (
                       <KudosItem key={Math.random()}>
                           <DateElement>{moment(k.timestamp).fromNow()}</DateElement>
-                          {this.renderUsers(k.users)}
-                          {k.description}
+                          <div dangerouslySetInnerHTML={{ __html: k.description }}/>
                       </KudosItem>
                   );
               })
             : null;
-    };
-
-    private renderUsers = (users: User[]) => {
-        return users.map(u => {
-            return <LabelNick key={Math.random()}>{u.nick}</LabelNick>;
-        });
     };
 }
 

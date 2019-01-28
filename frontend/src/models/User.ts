@@ -7,7 +7,7 @@ export class User {
         @Field("kudos_number") public kudosNumber: number,
         @Field("display_name", true) public displayName?: string,
         @Field("image", true) public image?: string,
-        @Field("name", true) public nick?: string,
+        @Field("name", true) public name?: string,
         @Field("email", true) public email?: string,
     ) {}
 }

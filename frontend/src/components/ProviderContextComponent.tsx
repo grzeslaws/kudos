@@ -12,7 +12,7 @@ export interface IContext {
     topPicks: User[];
     showSpinner: boolean;
     fetchKudos: (page?: number) => void;
-    fetchUsers: (arg: string) => void;
+    fetchUsers: () => void;
     fetchTopPicks: () => void;
     createPdf: (range: string) => Promise<{ pdf_url: string }>;
     setSpinner: (setting: boolean) => void;
@@ -28,7 +28,7 @@ class ProviderContextComponent extends React.Component<{}, IContext> {
         showSpinner: false,
         fetchKudos: (page = 1) => this.fetchKudos(page),
         createPdf: (range = "week") => this.createPdf(range),
-        fetchUsers: (arg: string) => this.fetchUsers(arg),
+        fetchUsers: () => this.fetchUsers(),
         fetchTopPicks: () => this.fetchTopPicks(),
         setSpinner: (setting: boolean) => this.setSpiner(setting),
     };
@@ -50,7 +50,7 @@ class ProviderContextComponent extends React.Component<{}, IContext> {
         });
     };
     private createPdf = (range: string) => http(endpoints.createPdf(range));
-    private fetchUsers = (arg: string) => http(endpoints.users(arg)).then(json => (json ? this.setState({ users: parseArray(User, json.users) }) : null));
+    private fetchUsers = () => http(endpoints.users).then(json => (json ? this.setState({ users: parseArray(User, json.users) }) : null));
     private fetchTopPicks = () => http(endpoints.topPicks).then(json => (json ? this.setState({ topPicks: parseArray(User, json.top_picks) }) : null));
 }
 

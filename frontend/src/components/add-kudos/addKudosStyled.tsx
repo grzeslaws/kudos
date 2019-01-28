@@ -54,7 +54,7 @@ export const ErrorMessage = styled<IErrorMessage, "div">("div")`
 
     &:after {
         content: "";
-        background-image: url(${ArrowErrorMessage});
+        background-image: url(${ArrowErrorMessage}); 
         width: 5px;
         height: 4px;
         position: absolute;

@@ -15,6 +15,12 @@ def get_users(arg):
         return jsonify({"users": []}), 200
 
 
+@app.route("/api/all_users", methods=["GET"])
+def all_users():
+    users = User.get_all()
+    return jsonify({"users": [user_item(u) for u in users]}), 200
+
+
 @app.route("/api/top_picks", methods=["GET"])
 def top_picks():
 

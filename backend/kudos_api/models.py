@@ -26,6 +26,10 @@ class User(db.Model):
         return cls.query.limit(3).all()
 
     @classmethod
+    def get_all(cls):
+        return cls.query.all()
+
+    @classmethod
     def search(cls, arg):
         return cls.query.filter(db.or_(cls.name.contains(arg)), cls.display_name.contains(arg),
                                 cls.email.contains(arg)).all()

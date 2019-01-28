@@ -1,4 +1,5 @@
 import styled from "..";
+import SendKudosSvg from "../../assets/images/send-kudos-button.svg";
 
 interface IButton {
     big?: boolean;
@@ -45,10 +46,21 @@ const Button = styled<IButton, "button">("button")`
     ${props => (props.centered ? "margin: 0 auto;" : null)}
 `;
 
+const SendKudosButton = styled.button`
+    ${props => baseStyfeForButton(props)}
+    background-image: url(${SendKudosSvg});
+    background-repeat: no-repeat;
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+`;
+
 const ButtonPure = styled.a`
     ${props => baseStyfeForButton(props)}
     
     color: ${props => props.theme.colors.colorPrimary()};
 `;
 
-export { Button, ButtonPure };
+export { Button, ButtonPure, SendKudosButton };
