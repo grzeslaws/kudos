@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
 
 export const WrapperUser = styled.div`
     display: flex;
-    font-size: ${props => props.theme.fonts.sizeBase};
+    font-size: ${props => props.theme.fonts.sizeMedium};
     margin-bottom: ${props => props.theme.spacing.defaultSpacing(2)};
 `;
 
@@ -23,7 +23,7 @@ export const KudosNumber = styled.span`
 export const Description = styled.div`
     font-weight: ${props => props.theme.fonts.fontLight};
     color: ${props => props.theme.colors.colorGray()};
-    font-size: ${props => props.theme.fonts.sizeBase};
+    font-size: ${props => props.theme.fonts.sizeMedium};
     margin-bottom: ${props => props.theme.spacing.defaultSpacing(3)};
 `;
 

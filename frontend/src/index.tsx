@@ -9,6 +9,7 @@ import boxSizing from "./theme/generic/box-sizing";
 import normalize from "./theme/generic/normalize";
 import reset from "./theme/generic/reset";
 import fonts from "./theme/settings/fonts";
+import mention from "./theme/objects/Mention";
 import { WrapperColumns, Column, WrapperFull, Photos, WrapperMain, Navbar } from "./indexStyled";
 import { TopPicksComponent } from "./components/top-picks/TopPicksComponent";
 import { SpinnerComponent } from "./components/spinner/SpinnerComponent";
@@ -20,6 +21,7 @@ injectGlobal`
     ${boxSizing}
     ${normalize}
     ${reset}
+    ${mention}
 
     html,
     body {

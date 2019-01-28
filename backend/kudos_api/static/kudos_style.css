@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,600,600i&subset=latin-ext");
+
+body {
+    font-family: "Montserrat", serif;
+    color: #333333;
+    font-size: 14px;
+    font-weight: 300;
+    margin: 24px;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: 300;
+}
+
+.draftJsMentionPlugin__mention__29BEd {
+    color: #2ba9df;
+    background-color: rgba(146, 221, 255, 0.2);
+    font-size: 14px;
+    border-radius: 2px;
+    margin-right: 4px;
+    min-height: 18px;
+    align-items: center;
+    display: inline-flex;
+    padding-left: 2px;
+    padding-right: 2px;
+    line-height: 1;
+}
+
+.kudos-list {
+    margin: 0 0 58px 0;
+    padding: 0 0 8px 0;
+    border-bottom: 1px solid rgba(242, 242, 242, 1);
+}
+
+.list-item {
+    list-style: none;
+    margin-bottom: 24px;
+}
+
+.date {
+    color: #828282;
+    font-size: 8px;
+    margin-bottom: 8px;
+}
+
+.user-name {
+    font-weight: 600;
+}
+
+.users-list {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+}
+
+.user-item {
+    list-style: none;
+    margin-right: 48px;
+    margin-bottom: 16px;
+    display: inline-block;
+}
+
+.user-image {
+    width: 32px;
+    height: 32px;
+    border-radius: 50px;
+    margin-right: 8px;
+}
+
+.wrapper-user-data {
+    display: inline-block;
+}

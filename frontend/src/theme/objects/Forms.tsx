@@ -17,15 +17,17 @@ const Form = styled.form`
 
 const WrapperInput = styled.div`
     position: relative;
+    font-weight: ${props => props.theme.fonts.fontLight};
+    color: ${props => props.theme.colors.colorGray()};
 `;
 
 const WrapperInputText = styled<IWrapperInputText, "div">("div")`
-    display: flex;
     border: 1px solid ${props => props.focused ? props.theme.colors.colorPrimary() : props.theme.colors.colorGrayLight()};
     border-radius: ${props => props.theme.radius.defaultRadius};
-    padding: ${props => props.theme.spacing.defaultSpacing(1)};
+    padding: 6px 50px 6px 8px;
     margin-bottom: ${props => props.theme.spacing.defaultSpacing(1)};
     transition: ${props => props.theme.transitions.transitionDefault};
+    text-align: left;
 `;
 
 const WrapperUsers = styled.div`
