@@ -3,29 +3,25 @@ import { IContext } from "../ProviderContextComponent";
 import wrapperComponent from "../WrapperComponent";
 import { http } from "../../services/http";
 import { endpoints } from "../../endpoints";
-import { WrapperInput, WrapperInputText } from "../../theme/objects/Forms";
+import { WrapperInput } from "../../theme/objects/Forms";
 import { ErrorMessage, Wrapper, Logos } from "./addKudosStyled";
 import { SendKudosButton } from "../../theme/objects/Buttons";
 import { User } from "../../models/User";
-import { EditorState } from "draft-js";
+import { EditorState, convertToRaw } from "draft-js";
 import createMentionPlugin, { defaultSuggestionsFilter } from "draft-js-mention-plugin";
 import Editor from "draft-js-plugins-editor";
 export interface Props {
     context?: IContext;
 }
 
-export type Direction = "ArrowUp" | "ArrowDown" | "Enter" | "Escape" | null;
-
 interface State {
     textUserKudos: string;
     descriptionKudos: string;
-    usersKudos: User[];
     usersKudosErrorMessage: boolean;
-    kudosTextErrorMessage: boolean;
     indexOfUser: number;
-    focusedInput: boolean;
     editorState: EditorState;
     suggestions: User[];
+    isFocused: boolean;
 }
 
 class AddKudos extends React.Component<Props, State> {
@@ -40,13 +36,11 @@ class AddKudos extends React.Component<Props, State> {
     public readonly state = {
         textUserKudos: "",
         descriptionKudos: "",
-        usersKudos: [new User(0, "", 0)],
         usersKudosErrorMessage: false,
-        kudosTextErrorMessage: false,
         indexOfUser: 0,
-        focusedInput: false,
         editorState: EditorState.createEmpty(),
         suggestions: this.props.context!.users,
+        isFocused: false,
     };
 
     public render() {
@@ -75,22 +69,17 @@ class AddKudos extends React.Component<Props, State> {
         return (
             <Wrapper>
                 <Logos />
-                <WrapperInput>
-                    <WrapperInputText focused={this.state.focusedInput}>
-                        <Editor
-                            editorState={this.state.editorState}
-                            onChange={this.onChange}
-                            ref={this.editor}
-                            plugins={plugins}
-                            placeholder="My kudos goes to @..."
-                        />
-                        <MentionSuggestions
-                            onSearchChange={this.onSearchChange}
-                            suggestions={this.state.suggestions}
-                            onAddMention={this.onAddMention}
-                            entryComponent={Entry}
-                        />
-                    </WrapperInputText>
+                <WrapperInput focused={this.state.isFocused}>
+                    <Editor
+                        editorState={this.state.editorState}
+                        onChange={this.onChange}
+                        ref={this.editor}
+                        plugins={plugins}
+                        placeholder="My kudos goes to @..."
+                        onFocus={() => this.setInputBorder(true)}
+                        onBlur={() => this.setInputBorder(false)}
+                    />
+                    <MentionSuggestions onSearchChange={this.onSearchChange} suggestions={this.state.suggestions} entryComponent={Entry} />
                     <ErrorMessage show={this.state.usersKudosErrorMessage}>Choose who are you giving kudos to</ErrorMessage>
                     <SendKudosButton onClick={this.addKudos} />
                 </WrapperInput>
@@ -98,45 +87,35 @@ class AddKudos extends React.Component<Props, State> {
         );
     }
 
-    public onSearchChange = ({ value }) => {
+    private setInputBorder = (flag: boolean) => this.setState({ isFocused: flag });
+
+    private onSearchChange = ({ value }) => {
         this.setState({
             suggestions: defaultSuggestionsFilter(value, this.props.context!.users),
         });
     };
 
     private onChange = (editorState: EditorState) => {
-        this.setState({
-            editorState,
-        });
-        if (this.editor.current && this.editor.current.editor) {
-            console.log(this.editor.current ? this.editor.current.editor.editor.innerHTML : null);
+        const isTextIncludesAt =
+            editorState
+                .getCurrentContent()
+                .getPlainText()
+                .indexOf("@") !== -1;
+        this.setState({ editorState });
+        if (isTextIncludesAt) {
+            this.setState({ usersKudosErrorMessage: false });
         }
-    };
-
-    private onAddMention = e => {
-        this.setState({ usersKudos: [...this.state.usersKudos, e], usersKudosErrorMessage: false });
     };
 
     private addKudos = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-
-        const text = this.state.editorState.getCurrentContent().getPlainText();
-
-        if (this.state.usersKudos.length < 2) {
+        if (this.getUsersKudos().length < 1) {
             this.setState({ usersKudosErrorMessage: true });
-        }
-
-        if (!text) {
-            this.setState({ kudosTextErrorMessage: true });
-        }
-
-        if (this.state.usersKudos.length < 2 || !text) {
             return;
         }
 
         const payload = {
-            description: this.editor.current ? this.editor.current.editor.editor.innerHTML : "",
-            uuid: this.state.usersKudos.map(u => u.uuid),
+            description: this.editor.current.editor.editor.innerHTML,
+            uuid: this.getUsersKudos(),
         };
 
         http(endpoints.kudos(), payload).then(() => {
@@ -147,6 +126,17 @@ class AddKudos extends React.Component<Props, State> {
                 this.setState({ editorState: EditorState.createEmpty() });
             }
         });
+    };
+
+    private getUsersKudos = () => {
+        const usersArr: string[] = [];
+        const entityMap = convertToRaw(this.state.editorState.getCurrentContent()).entityMap;
+        Object.keys(entityMap).forEach(key => {
+            const user: string = entityMap[key].data.mention.uuid;
+            usersArr.push(user);
+        });
+
+        return usersArr;
     };
 }
 

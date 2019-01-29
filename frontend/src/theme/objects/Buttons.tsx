@@ -53,8 +53,8 @@ const SendKudosButton = styled.button`
     height: 40px;
     width: 40px;
     position: absolute;
-    right: 0;
-    bottom: 0;
+    right: -1px;
+    bottom: -1px;
 `;
 
 const ButtonPure = styled.a`
