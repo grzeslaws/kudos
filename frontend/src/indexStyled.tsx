@@ -23,13 +23,9 @@ export const WrapperColumns = styled.div`
     display: flex;
     background-color: ${props => props.theme.colors.colorGrayLight()};
 
-    ${media.desktop`
+    ${props => media(props).desktop`
         flex-direction: column;
         max-height: unset;
-        padding: 80px;
-    `}
-
-    ${media.mobile`
         padding: 20px;
     `}
 `;
@@ -41,6 +37,10 @@ export const Photos = styled.div`
     background-size: cover;
     height: ${props => props.theme.spacing.defaultSpacing(10)};
     z-index: 1;
+
+    ${props => media(props).desktop`
+        position: unset;
+    `}
 `;
 
 export const Navbar = styled.div`
@@ -89,8 +89,11 @@ export const Column = styled<IColumn, "div">("div")`
         }
     }
 
-    ${media.desktop`
+    ${media().desktop`
         margin-right: unset;
         margin-top: unset;
+        position: unset;
+        padding-left: unset;
+        padding-right: unset;
     `}
 `;

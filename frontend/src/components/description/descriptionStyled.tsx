@@ -13,7 +13,7 @@ export const TextDescription = styled.div`
 `;
 
 export const Graphic = styled(GraphicSvg)`
-    ${media.desktop`
+    ${media().desktop`
         width: 100%;
     `}
 `;
