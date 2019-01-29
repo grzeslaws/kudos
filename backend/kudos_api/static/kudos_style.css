@@ -71,3 +71,14 @@ h2 {
 .wrapper-user-data {
     display: inline-block;
 }
+
+.draftJsEmojiPlugin__emoji__2oqBk {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: cover;
+}
+
+.draftJsEmojiPlugin__emoji__2oqBk span {
+    display: none;
+}

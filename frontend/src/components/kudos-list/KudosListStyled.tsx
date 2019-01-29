@@ -30,7 +30,7 @@ export const PrintOption = styled.div`
     position: absolute;
     right: 0;
     top: ${props => props.theme.spacing.defaultSpacing(3)};
-    font-size: ${props => props.theme.fonts.sizeBase};
+    font-size: ${props => props.theme.fonts.sizeMedium};
     font-weight: ${props => props.theme.fonts.fontLight};
     width: ${props => props.theme.spacing.defaultSpacing(19)};
     padding: ${props => props.theme.spacing.defaultSpacing() + " " + props.theme.spacing.defaultSpacing(2)};

@@ -7,8 +7,7 @@ export default css`
         z-index: -1;
         color: ${colors.colorGray(0.5)};
     }
-    .draftJsMentionPlugin__mention__29BEd,
-    .draftJsMentionPlugin__mention__29BEd:visited {
+    .draftJsMentionPlugin__mention__29BEd {
         padding: 3px 5px;
         line-height: 1;
         display: inline-flex;
@@ -50,7 +49,7 @@ export default css`
     }
 
     .draftJsMentionPlugin__mentionSuggestionsEntryFocused__3LcTd {
-        background-color: rgba(130, 130, 130, 0.2);
+        background-color: ${colors.colorGray(0.2)};
 
         div {
             display: flex;
@@ -90,7 +89,7 @@ export default css`
         box-sizing: border-box;
         -webkit-transform: scale(0);
         transform: scale(0);
-        background-color: rgba(242, 242, 242, 1);
+        background-color: ${colors.colorGrayLight()};
     }
 
     /* additional styles */
@@ -156,9 +155,6 @@ export default css`
         text-overflow: ellipsis;
         margin-right: ${spacing.defaultSpacing(0.5)};
         font-size: ${fonts.sizeMedium};
-    }
-
-    .mentionSuggestionsEntryText {
     }
 
     .mentionSuggestionsEntryTitle {

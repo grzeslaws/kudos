@@ -9,6 +9,7 @@ import { SendKudosButton } from "../../theme/objects/Buttons";
 import { User } from "../../models/User";
 import { EditorState, convertToRaw } from "draft-js";
 import createMentionPlugin, { defaultSuggestionsFilter } from "draft-js-mention-plugin";
+import createEmojiPlugin from "draft-js-emoji-plugin";
 import Editor from "draft-js-plugins-editor";
 export interface Props {
     context?: IContext;
@@ -26,10 +27,12 @@ interface State {
 
 class AddKudos extends React.Component<Props, State> {
     private mentionPlugin: any;
+    private emojiPlugin: any;
     private editor: React.RefObject<any> = React.createRef();
 
     public componentWillMount() {
         this.mentionPlugin = createMentionPlugin({ mentionPrefix: "@", supportWhitespace: true });
+        this.emojiPlugin = createEmojiPlugin({ selectButtonContent: "" });
         this.props.context!.fetchUsers();
     }
 
@@ -64,7 +67,10 @@ class AddKudos extends React.Component<Props, State> {
         };
 
         const { MentionSuggestions } = this.mentionPlugin;
-        const plugins = [this.mentionPlugin];
+        const { EmojiSuggestions, EmojiSelect } = this.emojiPlugin;
+        const plugins = [this.mentionPlugin, this.emojiPlugin];
+
+        console.log(convertToRaw(this.state.editorState.getCurrentContent()).entityMap);
 
         return (
             <Wrapper>
@@ -80,6 +86,8 @@ class AddKudos extends React.Component<Props, State> {
                         onBlur={() => this.setInputBorder(false)}
                     />
                     <MentionSuggestions onSearchChange={this.onSearchChange} suggestions={this.state.suggestions} entryComponent={Entry} />
+                    <EmojiSuggestions />
+                    <EmojiSelect />
                     <ErrorMessage show={this.state.usersKudosErrorMessage}>Choose who are you giving kudos to</ErrorMessage>
                     <SendKudosButton onClick={this.addKudos} />
                 </WrapperInput>
@@ -131,9 +139,12 @@ class AddKudos extends React.Component<Props, State> {
     private getUsersKudos = () => {
         const usersArr: string[] = [];
         const entityMap = convertToRaw(this.state.editorState.getCurrentContent()).entityMap;
+
         Object.keys(entityMap).forEach(key => {
-            const user: string = entityMap[key].data.mention.uuid;
-            usersArr.push(user);
+            if (entityMap[key].type === "mention") {
+                const user: string = entityMap[key].data.mention.uuid;
+                usersArr.push(user);
+            }
         });
 
         return usersArr;

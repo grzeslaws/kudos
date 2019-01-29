@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16">
+  <path fill="#E5E5E5" d="M0 0h16v16H0z"/>
+  <g clip-path="url(#clip0)">
+    <path fill="#fff" d="M-888-252H552v900H-888z"/>
+    <mask id="a" width="480" height="40" x="-408" y="-12" maskUnits="userSpaceOnUse">
+      <path fill="#fff" fill-rule="evenodd" d="M-408-10c0-1.1.9-2 2-2H70a2 2 0 0 1 2 2v36a2 2 0 0 1-2 2h-476a2 2 0 0 1-2-2v-36z" clip-rule="evenodd"/>
+    </mask>
+    <g mask="url(#a)">
+      <path fill="#fff" fill-rule="evenodd" d="M-408-12H72v40h-480v-40z" clip-rule="evenodd"/>
+    </g>
+    <path stroke="#2BA9DF" d="M-406-11.5H70c.83 0 1.5.67 1.5 1.5v36c0 .83-.67 1.5-1.5 1.5h-476a1.5 1.5 0 0 1-1.5-1.5v-36c0-.83.67-1.5 1.5-1.5z"/>
+    <circle cx="8" cy="8" r="7.5" stroke="#2BA9DF"/>
+    <path stroke="#2BA9DF" d="M10.83 10.83a4 4 0 0 1-5.66 0"/>
+    <circle cx="5" cy="7" r="1" fill="#2BA9DF"/>
+    <circle cx="11" cy="7" r="1" fill="#2BA9DF"/>
+  </g>
+  <defs>
+    <clipPath id="clip0">
+      <path fill="#fff" d="M0 0h1440v900H0z" transform="translate(-888 -252)"/>
+    </clipPath>
+  </defs>
+</svg>

@@ -1,5 +1,5 @@
 from kudos_api import app, settings
-from flask import jsonify,  render_template
+from flask import jsonify
 from kudos_api.models import Kudos, User
 from sqlalchemy import desc
 import pdfkit
@@ -19,13 +19,22 @@ def create_pdf(range):
     local = utc.shift(hours=+1)
     date_now = local.format('YYYY-MM-DD_HH:mm:ss')
 
-    html_kudos = '<div><h2>Last {} kudos</h2>'.format(range)
+    html_kudos = '''
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <meta charset="utf-8">
+        </head>
+        <body>
+        <div><h2>Last {} kudos</h2>
+    '''.format(range)
 
     html_kudos += '<ul class="kudos-list">'
     for d in kudos:
+        print(d.description)
         html_kudos += '<div class="date">{}</div>'.format(d.date_string)
         html_kudos += '<li class="list-item">'
-        html_kudos += d.description
+        html_kudos += d.description.replace("//cdn", "http://cdn")
         html_kudos += "</li>"
     html_kudos += '</ul>'
 
@@ -42,9 +51,7 @@ def create_pdf(range):
         html_kudos += "</li>"
     html_kudos += '</ul>'
 
-    html_kudos += '<div>'
-
-    print(html_kudos)
+    html_kudos += '<div><body></html>'
 
     css = os.path.join(settings.BASE_DIR + settings.STATIC_FOLDER, 'kudos_style.css')
 
