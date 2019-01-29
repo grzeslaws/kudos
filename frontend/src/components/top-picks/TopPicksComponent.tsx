@@ -26,7 +26,7 @@ class TopPicks extends React.Component<Props> {
 
     private renderTopPicks = () => {
         
-        return this.props.context!.topPicks
+        return this.props.context!.users
             .sort((a, b) => b.kudosNumber - a.kudosNumber)
             .filter(u => u.kudosNumber > 0)
             .slice(0, 3)

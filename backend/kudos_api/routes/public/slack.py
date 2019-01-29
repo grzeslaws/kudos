@@ -49,12 +49,21 @@ def listening():
         event = request.json.get("event")
         if event.get("type") == "app_mention":
             text = event.get("text")
+            print(text)
             pattern_user = re.compile("<@[A-Z, 0-9]{9}>")
             users_matches = re.findall(pattern_user, text)
             users_matches = [u[2: -1] for u in users_matches]
             users = User.query.all()
             if any(u.uuid in users_matches for u in users):
-                description_kudos = text.split("> ")[-1]
+                description_kudos = ""
+                print("users_matches[1:]: ", users_matches[1:])
+                for um in users_matches[1:]:
+                    
+                    user = User.query.filter_by(uuid=um).first()
+                    if user.name:
+                        description_kudos += '<span class="draftJsMentionPlugin__mention__29BEd">{}</span>'.format(
+                            user.name)
+                description_kudos += text.split("> ")[-1]
                 add_kudos(description_kudos, users_matches)
 
         return jsonify({"message": "Kudos has been added!"}), 201
