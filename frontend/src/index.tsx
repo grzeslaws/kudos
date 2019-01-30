@@ -1,8 +1,5 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { KudosListComponent } from "./components/kudos-list/KudosListComponent";
-import { AddKudosComponent } from "./components/add-kudos/AddKudosComponent";
-import { DescriptionComponent } from "./components/description/DescriptionComponent";
 import ProvideContextComponent from "./components/ProviderContextComponent";
 import { injectGlobal, ThemeProvider, themeProps } from "./theme";
 import boxSizing from "./theme/generic/box-sizing";
@@ -11,10 +8,13 @@ import reset from "./theme/generic/reset";
 import fonts from "./theme/settings/fonts";
 import mention from "./theme/objects/Mention";
 import emoji from "./theme/objects/Emoji";
-import { WrapperColumns, Column, WrapperFull, Photos, WrapperMain, Navbar } from "./indexStyled";
-import { TopPicksComponent } from "./components/top-picks/TopPicksComponent";
+import { HashRouter as Router, Route, Redirect } from "react-router-dom";
 import { SpinnerComponent } from "./components/spinner/SpinnerComponent";
-import { ButtonPure } from "./theme/objects/Buttons";
+import { routes } from "./routes";
+import { ProtectedComponent } from "./components/ProtectedComponent";
+import { LayoutComponent } from "./components/layout/LayoutComponent";
+import { LoginComponent } from "./components/login/LoginComponent";
+import { boogleBtn } from "./theme/objects/Buttons";
 
 // tslint:disable-next-line:no-unused-expression
 injectGlobal`
@@ -24,6 +24,7 @@ injectGlobal`
     ${reset}
     ${mention}
     ${emoji}
+    ${boogleBtn}
 
     html,
     body {
@@ -39,30 +40,17 @@ injectGlobal`
 `;
 
 ReactDOM.render(
-    <ProvideContextComponent>
-        <ThemeProvider theme={themeProps}>
-            <WrapperMain>
-                <SpinnerComponent />
-                <Navbar>
-                    <ButtonPure href="#">Give kudos</ButtonPure>
-                </Navbar>
-                <WrapperFull>
-                    <AddKudosComponent />
-                </WrapperFull>
-                <Photos />
-                <WrapperColumns>
-                    <Column width="1" sticky={true}>
-                        <DescriptionComponent />
-                    </Column>
-                    <Column width="1" sticky={true}>
-                        <TopPicksComponent />
-                    </Column>
-                    <Column width="3">
-                        <KudosListComponent />
-                    </Column>
-                </WrapperColumns>
-            </WrapperMain>
-        </ThemeProvider>
-    </ProvideContextComponent>,
+    <Router>
+        <ProvideContextComponent>
+            <ThemeProvider theme={themeProps}>
+                <>
+                    <SpinnerComponent />
+                    <Route exact={true} path={routes.main} render={() => <Redirect to={routes.auth} />} />
+                    <ProtectedComponent path={routes.auth} component={LayoutComponent} />
+                    <Route exact={true} path={routes.login} component={LoginComponent} />
+                </>
+            </ThemeProvider>
+        </ProvideContextComponent>
+    </Router>,
     document.getElementById("root") as HTMLElement,
 );

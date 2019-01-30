@@ -28,7 +28,7 @@ const SpinnerElement = styled<ISpinner, "div">("div")`
     animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
     transition: ${props => props.theme.transitions.transitionDefault};
     opacity: ${props => (!props.show ? 0 : 1)};
-    z-index: 2;
+    z-index: 4;
 `;
 
 export { SpinnerElement };

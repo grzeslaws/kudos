@@ -8,7 +8,7 @@ export default css`
         display: inline-block;
         position: absolute;
         right: 54px;
-        top: 8px;
+        bottom: 5px;
     }
 
     .draftJsEmojiPlugin__emojiSelectButton__3sPol,

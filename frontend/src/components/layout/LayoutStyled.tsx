@@ -1,6 +1,6 @@
-import styled from "./theme";
-import { H2 } from "./theme/elements/Headings";
-import { media } from "./theme/tools/utils";
+import styled from "../../theme";
+import { H2 } from "../../theme/elements/Headings";
+import { media } from "../../theme/tools/utils";
 import photos from "src/assets/images/photos.jpg";
 
 interface IColumn {
@@ -8,19 +8,13 @@ interface IColumn {
     sticky?: boolean;
 }
 
-export const WrapperMain = styled.div`
-    font-family: ${props => props.theme.fonts.fontFamilyDefault};
-    color: ${props => props.theme.colors.colorBlack()};
-    line-height: ${props => props.theme.fonts.lineHeight};
-    flex: 1;
-`;
-
 export const Headline = styled(H2)`
     margin-bottom: ${props => props.theme.spacing.defaultSpacing(6)};
 `;
 
 export const WrapperColumns = styled.div`
     display: flex;
+    padding: ${props => props.theme.spacing.defaultSpacing(5)};
     background-color: ${props => props.theme.colors.colorGrayLight()};
 
     ${props => media(props).desktop`
@@ -45,13 +39,21 @@ export const Photos = styled.div`
 
 export const Navbar = styled.div`
     height: ${props => props.theme.spacing.defaultSpacing(6)};
-    position: sticky;
+    position: fixed;
+    width: 100%;
     top: 0;
     background-color: ${props => props.theme.colors.colorWhite()};
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    z-index: 1;
+    z-index: 3;
+    padding-left: ${props => props.theme.spacing.defaultSpacing(5)};
+    padding-right: ${props => props.theme.spacing.defaultSpacing(5)};
+
+    ${props => media(props).desktop`
+        padding-left: 20px;
+        padding-right: 20px;
+    `}
 `;
 
 export const WrapperFull = styled.div`
@@ -61,18 +63,25 @@ export const WrapperFull = styled.div`
     height: 50vh;
     position: relative;
     z-index: 2;
+    margin-left: ${props => props.theme.spacing.defaultSpacing(5)};
+    margin-right: ${props => props.theme.spacing.defaultSpacing(5)};
+    position: relative;
+
+    ${props => media(props).desktop`
+        margin: 20px;
+    `}
 `;
 
 export const Column = styled<IColumn, "div">("div")`
     flex: ${props => props.width};
     margin-top: ${props => props.theme.spacing.defaultSpacing(5)};
-    padding-left: ${props => props.theme.spacing.defaultSpacing(5)};
     padding-right: ${props => props.theme.spacing.defaultSpacing(5)};
     padding-bottom: ${props => props.theme.spacing.defaultSpacing(10)};
     ${props => (props.sticky ? `position: sticky; top: ${props.theme.spacing.defaultSpacing(6 + 6 + 8)}; height: 100%;` : null)}
 
     &:last-child {
         margin-right: unset;
+        padding-right: unset;
         overflow: auto;
 
         ::-webkit-scrollbar {
