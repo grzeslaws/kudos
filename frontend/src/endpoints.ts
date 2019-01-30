@@ -6,5 +6,6 @@ export const endpoints = {
     users: `${baseUrl}/all_users`,
     topPicks: `${baseUrl}/top_picks`,
     login: `${baseUrl}/login`,
-    createPdf: (range: string) => `${baseUrl}/create_pdf/${range}`
+    createPdf: (range: string) => `${baseUrl}/create_pdf/${range}`,
+    profile: `${baseUrl}/profile`,
 };

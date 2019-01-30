@@ -1,5 +1,8 @@
 import styled from "..";
 import SendKudosSvg from "../../assets/images/send-kudos-button.svg";
+import IconGSvg from "../../assets/images/icon-g.svg";
+import { css } from "..";
+import { colors, fonts, spacing } from "../settings/settings-project";
 
 interface IButton {
     big?: boolean;
@@ -59,8 +62,45 @@ const SendKudosButton = styled.button`
 
 const ButtonPure = styled.a`
     ${props => baseStyfeForButton(props)}
-    
+
+    padding: 3px 16px 1px;
     color: ${props => props.theme.colors.colorPrimary()};
 `;
 
-export { Button, ButtonPure, SendKudosButton };
+const boogleBtn = css`
+    .boogle-btn {
+        background-color: ${colors.colorPrimary()} !important;
+        display: flex !important;
+        box-shadow: unset !important;
+        color: ${colors.colorWhite()} !important;
+        font-size: ${fonts.sizeMedium} !important;
+        height: ${spacing.defaultSpacing(4)} !important;
+        padding-left: ${spacing.defaultSpacing(2)} !important;
+        padding-right: ${spacing.defaultSpacing(2)} !important;
+        font-family: ${fonts.fontFamilyDefault} !important;
+        font-family: ${fonts.fontFamilyDefault} !important;
+        text-transform: uppercase;
+        outline: 0;
+        width: fit-content;
+
+        &:before {
+            content: "";
+            background-image: url(${IconGSvg});
+            background-repeat: no-repeat;
+            width: 14px;
+            height: 14px;
+            margin-right: 6px;
+        }
+
+        & > div {
+            display: none;
+        }
+
+        & > span {
+            padding: unset !important;
+            font-weight: ${fonts.fontBold} !important;
+        }
+    }
+`;
+
+export { Button, ButtonPure, SendKudosButton, boogleBtn };

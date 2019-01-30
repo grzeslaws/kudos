@@ -6,6 +6,9 @@ from kudos_api.models import User
 from kudos_api.services import add_kudos
 import re
 
+client_id = os.environ["CLIENT_SLACK_ID"]
+client_secret = os.environ["CLIENT_SLACK_SECRET"]
+
 slack_token = os.environ["SLACK_TOKEN"]
 sc = SlackClient(slack_token)
 
@@ -13,7 +16,17 @@ sc = SlackClient(slack_token)
 #     "chat.postMessage",
 #     channel="test",
 #     text="Hello from Kudos! :tada:"
+
 # )
+
+
+@app.route("/begin_auth", methods=["GET"])
+def pre_install():
+    return '''
+      <a href="https://slack.com/oauth/authorize?scope={0}&client_id={1}">
+          Sign in with Slack
+      </a>
+  '''.format("identity.basic", client_id)
 
 
 @app.route("/init_slack_users", methods=["GET"])
@@ -58,7 +71,7 @@ def listening():
                 description_kudos = ""
                 print("users_matches[1:]: ", users_matches[1:])
                 for um in users_matches[1:]:
-                    
+
                     user = User.query.filter_by(uuid=um).first()
                     if user.name:
                         description_kudos += '<span class="draftJsMentionPlugin__mention__29BEd">{}</span>'.format(

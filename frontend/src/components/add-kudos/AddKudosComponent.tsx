@@ -4,13 +4,14 @@ import wrapperComponent from "../WrapperComponent";
 import { http } from "../../services/http";
 import { endpoints } from "../../endpoints";
 import { WrapperInput } from "../../theme/objects/Forms";
-import { ErrorMessage, Wrapper, Logos } from "./addKudosStyled";
+import { ErrorMessage, Wrapper } from "./addKudosStyled";
 import { SendKudosButton } from "../../theme/objects/Buttons";
 import { User } from "../../models/User";
 import { EditorState, convertToRaw } from "draft-js";
 import createMentionPlugin, { defaultSuggestionsFilter } from "draft-js-mention-plugin";
 import createEmojiPlugin from "draft-js-emoji-plugin";
 import Editor from "draft-js-plugins-editor";
+import { Logos } from 'src/theme/objects/Logos';
 export interface Props {
     context?: IContext;
 }
@@ -129,7 +130,7 @@ class AddKudos extends React.Component<Props, State> {
         http(endpoints.kudos(), payload).then(() => {
             if (this.props.context) {
                 this.props.context.fetchKudos();
-                this.props.context.fetchTopPicks();
+                this.props.context.fetchUsers();
                 this.props.context.setSpinner(false);
                 this.setState({ editorState: EditorState.createEmpty() });
             }

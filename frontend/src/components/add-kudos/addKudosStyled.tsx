@@ -1,20 +1,11 @@
 import styled from "../../theme";
 import AlertSvg from "../../assets/images/icon-alert.svg";
 import ArrowErrorMessage from "../../assets/images/icon-arrow-error-message.svg";
-import LogosSvg from "-!svg-react-loader?name=Icon!src/assets/images/logos.svg";
-// import IconSmileySvg from "-!svg-react-loader?name=Icon!src/assets/images/icon-smiley.svg";
 
 interface IErrorMessage {
     show?: boolean;
 }
 
-export const Logos = styled(LogosSvg)`
-    margin-bottom: ${props => props.theme.spacing.defaultSpacing(4)};
-`;
-
-// export const IconSmiley = styled(IconSmileySvg)`
-//     margin-bottom: ${props => props.theme.spacing.defaultSpacing(4)};
-// `;
 
 export const ErrorMessage = styled<IErrorMessage, "div">("div")`
     display: ${props => (props.show ? "flex" : "none")};
