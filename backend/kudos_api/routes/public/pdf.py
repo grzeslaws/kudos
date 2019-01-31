@@ -47,12 +47,13 @@ def create_pdf(current_user, range):
         html_kudos += '<img src={} class="user-image">'.format(u.image)
         html_kudos += '<div class="wrapper-user-data">'
         html_kudos += '<div class="user-name">{}</div>'.format(u.display_name)
-        html_kudos += '<div>{} kudos</div>'.format(len(u.kudos))
+        html_kudos += '<div>{} kudos</div>'.format(len(u.kudos_received))
         html_kudos += '</div>'
         html_kudos += "</li>"
     html_kudos += '</ul>'
 
     html_kudos += '<div><body></html>'
+    print(html_kudos)
 
     css = os.path.join(settings.BASE_DIR + settings.STATIC_FOLDER, 'kudos_style.css')
 

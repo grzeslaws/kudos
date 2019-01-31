@@ -3,7 +3,7 @@
 body {
     font-family: "Montserrat", serif;
     color: #333333;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 300;
     margin: 24px;
 }
@@ -16,7 +16,7 @@ h2 {
 .draftJsMentionPlugin__mention__29BEd {
     color: #2ba9df;
     background-color: rgba(146, 221, 255, 0.2);
-    font-size: 14px;
+    font-size: 16px;
     border-radius: 2px;
     margin-right: 4px;
     min-height: 18px;
@@ -52,13 +52,15 @@ h2 {
     margin: 0;
     padding: 0;
     display: inline-block;
+    width: 100%;
 }
 
 .user-item {
     list-style: none;
     margin-right: 48px;
     margin-bottom: 16px;
-    display: inline-block;
+    display: block;
+    float: left;
 }
 
 .user-image {
@@ -69,7 +71,8 @@ h2 {
 }
 
 .wrapper-user-data {
-    display: inline-block;
+    float: right;
+    min-width: 70px;
 }
 
 .draftJsEmojiPlugin__emoji__2oqBk {

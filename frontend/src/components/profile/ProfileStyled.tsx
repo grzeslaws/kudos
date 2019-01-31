@@ -1,6 +1,5 @@
 import styled from "../../theme";
 import { Button } from "src/theme/objects/Buttons";
-import { media } from 'src/theme/tools/utils';
 
 export const Wrapper = styled.div`
     display: flex;
@@ -10,6 +9,9 @@ export const Wrapper = styled.div`
     color: ${p => p.theme.colors.colorBlack()};
     padding: 20px;
     line-height: ${p => p.theme.fonts.lineHeightSmall};
+    position: absolute;
+    top: ${p => p.theme.spacing.defaultSpacing(6)};
+    right: ${p => p.theme.spacing.defaultSpacing(5)};
 `;
 
 export const ProfileName = styled.h3`
@@ -36,17 +38,4 @@ export const Label = styled.div`
 
 export const SingOutButton = styled(Button)`
     margin-top: ${p => p.theme.spacing.defaultSpacing()};
-`;
-
-export const WrapperPosition = styled.div`
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    display: flex;
-    align-items: center;
-
-    ${props => media(props).desktop`
-        display: none;
-    `}
 `;
