@@ -27,8 +27,8 @@ class TopPicks extends React.Component<Props> {
     private renderTopPicks = () => {
         
         return this.props.context!.users
-            .sort((a, b) => b.kudosNumber - a.kudosNumber)
-            .filter(u => u.kudosNumber > 0)
+            .sort((a, b) => b.kudosReceived - a.kudosReceived)
+            .filter(u => u.kudosReceived > 0)
             .slice(0, 3)
             .map(u => {
                 return (
@@ -37,7 +37,7 @@ class TopPicks extends React.Component<Props> {
                         <WrapperUserName>
                             <UserName>{u.displayName}</UserName>
                             <KudosNumber>
-                                <KudosNumber>{u.kudosNumber}</KudosNumber> kudos
+                                <KudosNumber>{u.kudosReceived}</KudosNumber> kudos
                             </KudosNumber>
                         </WrapperUserName>
                     </WrapperUser>

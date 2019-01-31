@@ -8,4 +8,5 @@ export const endpoints = {
     login: `${baseUrl}/login`,
     createPdf: (range: string) => `${baseUrl}/create_pdf/${range}`,
     profile: `${baseUrl}/profile`,
+    voteForKudos: `${baseUrl}/vote_for_kudos`,
 };

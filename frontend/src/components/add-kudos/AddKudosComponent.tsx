@@ -130,6 +130,7 @@ class AddKudos extends React.Component<Props, State> {
             if (this.props.context) {
                 this.props.context.fetchKudos();
                 this.props.context.fetchUsers();
+                this.props.context.fetchProfile(false);
                 this.props.context.setSpinner(false);
                 this.setState({ editorState: EditorState.createEmpty() });
             }

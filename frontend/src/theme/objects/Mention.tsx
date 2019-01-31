@@ -19,19 +19,6 @@ export default css`
         color: ${colors.colorPrimary()};
         border-radius: ${radius.defaultRadius};
         position: relative;
-        cursor: pointer;
-    }
-
-    .draftJsMentionPlugin__mention__29BEd:hover,
-    .draftJsMentionPlugin__mention__29BEd:focus {
-        color: #677584;
-        background: #edf5fd;
-        outline: 0; /* reset for :focus */
-    }
-
-    .draftJsMentionPlugin__mention__29BEd:active {
-        color: #222;
-        background: #455261;
     }
     .draftJsMentionPlugin__mentionSuggestionsEntry__3mSwm {
         padding: 4px 6px;
@@ -40,7 +27,7 @@ export default css`
         div {
             display: flex;
             align-items: center;
-            margin-right: ${spacing.defaultSpacing(0.5)}
+            margin-right: ${spacing.defaultSpacing(0.5)};
         }
     }
 
@@ -54,7 +41,7 @@ export default css`
         div {
             display: flex;
             align-items: center;
-            margin-right: ${spacing.defaultSpacing(0.5)}
+            margin-right: ${spacing.defaultSpacing(0.5)};
         }
     }
 

@@ -5,10 +5,12 @@ from sqlalchemy import desc
 import pdfkit
 import arrow
 import os
+from kudos_api.routes import token_required
 
 
 @app.route("/api/create_pdf/<range>", methods=["POST", "GET"])
-def create_pdf(range):
+@token_required
+def create_pdf(current_user, range):
 
     range_timestamp = arrow.utcnow().floor(range).timestamp * 1000
 
@@ -31,7 +33,6 @@ def create_pdf(range):
 
     html_kudos += '<ul class="kudos-list">'
     for d in kudos:
-        print(d.description)
         html_kudos += '<div class="date">{}</div>'.format(d.date_string)
         html_kudos += '<li class="list-item">'
         html_kudos += d.description.replace("//cdn", "http://cdn")

@@ -4,7 +4,7 @@ import wrapperComponent from "../WrapperComponent";
 import { Route } from "react-router-dom";
 import { routes } from "src/routes";
 import { Wrapper, ProfileName, ProfileEmail, KudosNumber, Label, SingOutButton, WrapperPosition } from "./ProfileStyled";
-import { ProfileImage } from 'src/theme/objects/Images';
+import { ProfileImage } from "src/theme/objects/Images";
 
 export interface Props {
     context?: IContext;
@@ -12,15 +12,17 @@ export interface Props {
 
 class Profile extends React.Component<Props> {
     public render() {
-        const { image, displayName, email, kudosNumber } = this.props.context!.profile!;
+        const { image, displayName, email, kudosReceived, kudosGiven } = this.props.context!.profile!;
         return (
             <WrapperPosition>
                 <Wrapper>
                     <ProfileImage path={image} />
                     <ProfileName>{displayName}</ProfileName>
                     <ProfileEmail>{email}</ProfileEmail>
+                    <Label>Kudos given</Label>
+                    <KudosNumber>{kudosReceived}</KudosNumber>
                     <Label>Kudos received</Label>
-                    <KudosNumber>{kudosNumber}</KudosNumber>
+                    <KudosNumber>{kudosGiven}</KudosNumber>
                     <Route
                         render={({ history }) => (
                             <SingOutButton revers={true} onClick={() => this.logout(history)}>

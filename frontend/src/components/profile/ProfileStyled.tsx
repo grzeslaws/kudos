@@ -26,6 +26,7 @@ export const ProfileEmail = styled.div`
 
 export const KudosNumber = styled.div`
     font-size: ${p => p.theme.fonts.sizeMedium};
+    margin-bottom: ${p => p.theme.spacing.defaultSpacing()};
 `;
 
 export const Label = styled.div`
@@ -34,7 +35,7 @@ export const Label = styled.div`
 `;
 
 export const SingOutButton = styled(Button)`
-    margin-top: ${p => p.theme.spacing.defaultSpacing(3)};
+    margin-top: ${p => p.theme.spacing.defaultSpacing()};
 `;
 
 export const WrapperPosition = styled.div`
