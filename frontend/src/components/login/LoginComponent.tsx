@@ -18,7 +18,6 @@ export interface Props {
 class Login extends React.Component<Props> {
     public render() {
         const isAuthenticated = !!this.props.context!.profile;
-        console.log("isAuthenticated: ", isAuthenticated);
 
         return (
             <>
@@ -47,18 +46,13 @@ class Login extends React.Component<Props> {
     }
 
     private responseGoogle = resp => {
-        http(endpoints.login, { tokenId: resp.tokenId })
-            .then(r => {
-                sessionStorage.setItem("kudosAuthToken", r.kudos_auth_token);
-                this.props.context!.fetchProfile();
-                console.log("in then", r)
-                this.props.context!.addMessage({ message: r.message, type: MessageType.error });
-            })
-            .catch(err => {
-                console.log(err.message)
-                console.log(err)
-                this.props.context!.addMessage({ message: err.message, type: MessageType.error });
-            });
+        http(endpoints.login, { tokenId: resp.tokenId }).then(r => {
+            sessionStorage.setItem("kudosAuthToken", r.kudos_auth_token);
+            this.props.context!.fetchProfile();
+            if (r.message) {
+                this.props.context!.addMessage({ message: r.message, type: MessageType.error, timeToHide: 3 });
+            }
+        });
     };
 }
 

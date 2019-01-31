@@ -6,7 +6,6 @@ interface IErrorMessage {
     show?: boolean;
 }
 
-
 export const ErrorMessage = styled<IErrorMessage, "div">("div")`
     display: ${props => (props.show ? "flex" : "none")};
     color: ${props => props.theme.colors.colorAlert()};

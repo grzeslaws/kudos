@@ -14,7 +14,7 @@ export interface IContext {
     topPicks: User[];
     showSpinner: boolean;
     authInProgress: boolean;
-    messages: Message[] | null;
+    messages: Message[];
     fetchKudos: (page?: number) => void;
     fetchUsers: () => void;
     fetchTopPicks: () => void;
@@ -22,7 +22,7 @@ export interface IContext {
     createPdf: (range: string) => Promise<{ pdf_url: string }>;
     setSpinner: (setting: boolean) => void;
     addMessage: (message: Message) => void;
-    removeMessage: (message: Message) => void; 
+    removeMessage: (message: Message) => void;
 }
 
 export const { Consumer, Provider } = React.createContext<IContext | null>(null);
@@ -47,7 +47,7 @@ class ProviderContextComponent extends React.Component<{}, IContext> {
     };
 
     public render() {
-        console.log(this.state)
+        console.log(this.state);
         return (
             <>
                 <Provider value={this.state}>{this.props.children}</Provider>
@@ -73,14 +73,17 @@ class ProviderContextComponent extends React.Component<{}, IContext> {
         this.setAuthInProgress(true);
         http(endpoints.profile)
             .then(json => (json ? this.setState({ profile: parse(User, json.profile), authInProgress: false }) : null))
-            .catch(err => {
+            .catch(() => {
                 this.setAuthInProgress(false);
                 this.setState({ profile: null });
             });
     };
-    private addMessage = (message: Message) => this.setState({ messages: [...this.state.messages, message] });
+    private addMessage = (message: Message) => {
+        message.id = Math.random();
+        this.setState({ messages: [...this.state.messages, message] });
+    };
     private removeMessage = (message: Message) => {
-        this.setState({ messages: this.state.messages.filter((m: Message) => m.timestamp !== message.timestamp) });
+        this.setState({ messages: this.state.messages.filter((m: Message) => m.id !== message.id) });
     };
 }
 

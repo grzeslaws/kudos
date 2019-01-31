@@ -8,7 +8,7 @@ export class Message {
     constructor(
         @Field("message") public message: string,
         @Field("type") public type: MessageType,
-        @Field("timestamp", true) public timestamp?: number,
+        @Field("id", true) public id?: number,
         @Field("timeToHide", true) public timeToHide?: number,
     ) {}
 }

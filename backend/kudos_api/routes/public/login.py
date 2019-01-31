@@ -29,4 +29,4 @@ def login():
             res.set_cookie("kudos_auth_token", token)
             return res, 200
         else:
-            return jsonify({"message": "No such user!"}), 401
+            return jsonify({"message": "No such user here!"}), 550
