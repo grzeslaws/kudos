@@ -1,30 +1,35 @@
-import styled, { keyframes } from "../../theme";
+import styled from "../../theme";
 import { hoverOpacity } from "src/theme/tools/utils";
 import { MessageType } from "src/models/Message";
-import IconClose from "-!svg-react-loader?name=Icon!../../../assets/images/icon-close.svg";
+import IconClose from "-!svg-react-loader?name=Icon!src/assets/images/icon-close.svg";
 
 interface Type {
     type?: MessageType;
-    show?: boolean;
+    // show?: boolean;
 }
 
-export const Wrapper = styled.div`
+interface IWrapper {
+    show: boolean;
+}
+
+export const Wrapper = styled<IWrapper, "div">("div")`
     position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
+    right: ${props => props.theme.spacing.defaultSpacing(3)};
+    top: ${props => props.show ? props.theme.spacing.defaultSpacing(3) : props.theme.spacing.defaultSpacing(-3)};
+    opacity: ${props => props.show ? "1" : "0"};
+    transition: ${props => props.theme.transitions.transitionDefault};
 `;
 
-const showMessage = keyframes`
-    from {
-        transform: translateY(-30px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-`;
+// const showMessage = keyframes`
+//     from {
+//         transform: translateY(-30px);
+//         opacity: 0;
+//     }
+//     to {
+//         transform: translateY(0);
+//         opacity: 1;
+//     }
+// `;
 
 export const WrapperMessage = styled<Type, "div">("div")`
     background-color: ${p => {
@@ -44,8 +49,9 @@ export const WrapperMessage = styled<Type, "div">("div")`
     transition: ${props => props.theme.transitions.transitionDefault};
     font-family: ${props => props.theme.fonts.fontFamilyDefault};
     font-weight: ${props => props.theme.fonts.fontLight};
-    opacity: ${props => (props.show ? 1 : 0)};
-    animation: ${showMessage} ${props => props.theme.transitions.transitionDefault};
+    padding-right: ${props => props.theme.spacing.defaultSpacing(20)};
+    padding-left: ${props => props.theme.spacing.defaultSpacing(3)};
+    border-radius: ${props => props.theme.radius.defaultRadius};
 `;
 
 export const IconToClose = styled(IconClose)`

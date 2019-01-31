@@ -11,7 +11,7 @@ import { EditorState, convertToRaw } from "draft-js";
 import createMentionPlugin, { defaultSuggestionsFilter } from "draft-js-mention-plugin";
 import createEmojiPlugin from "draft-js-emoji-plugin";
 import Editor from "draft-js-plugins-editor";
-import { Logos } from 'src/theme/objects/Logos';
+import { Logos } from "src/theme/objects/Logos";
 export interface Props {
     context?: IContext;
 }
@@ -70,8 +70,7 @@ class AddKudos extends React.Component<Props, State> {
         const { MentionSuggestions } = this.mentionPlugin;
         const { EmojiSuggestions, EmojiSelect } = this.emojiPlugin;
         const plugins = [this.mentionPlugin, this.emojiPlugin];
-
-        console.log(convertToRaw(this.state.editorState.getCurrentContent()).entityMap);
+        const suggestionsWithoutCurrentUser = this.state.suggestions.filter(u => u.uuid !== this.props.context!.profile!.uuid);
 
         return (
             <Wrapper>
@@ -86,7 +85,7 @@ class AddKudos extends React.Component<Props, State> {
                         onFocus={() => this.setInputBorder(true)}
                         onBlur={() => this.setInputBorder(false)}
                     />
-                    <MentionSuggestions onSearchChange={this.onSearchChange} suggestions={this.state.suggestions} entryComponent={Entry} />
+                    <MentionSuggestions onSearchChange={this.onSearchChange} suggestions={suggestionsWithoutCurrentUser} entryComponent={Entry} />
                     <EmojiSuggestions />
                     <EmojiSelect />
                     <ErrorMessage show={this.state.usersKudosErrorMessage}>Choose who are you giving kudos to</ErrorMessage>

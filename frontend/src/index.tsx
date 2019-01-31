@@ -15,6 +15,7 @@ import { ProtectedComponent } from "./components/ProtectedComponent";
 import { LayoutComponent } from "./components/layout/LayoutComponent";
 import { LoginComponent } from "./components/login/LoginComponent";
 import { boogleBtn } from "./theme/objects/Buttons";
+import { MessagesComponent } from './components/message/MessagesComponent';
 
 // tslint:disable-next-line:no-unused-expression
 injectGlobal`
@@ -45,6 +46,7 @@ ReactDOM.render(
             <ThemeProvider theme={themeProps}>
                 <>
                     <SpinnerComponent />
+                    <MessagesComponent />
                     <Route exact={true} path={routes.main} render={() => <Redirect to={routes.auth} />} />
                     <ProtectedComponent path={routes.auth} component={LayoutComponent} />
                     <Route exact={true} path={routes.login} component={LoginComponent} />
