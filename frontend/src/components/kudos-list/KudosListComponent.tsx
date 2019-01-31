@@ -1,10 +1,19 @@
 import * as React from "react";
 import { IContext } from "../ProviderContextComponent";
 import wrapperComponent from "../WrapperComponent";
-
-// import { LabelNick } from "src/theme/objects/Labels";
-// import { User } from "src/models/User";
-import { KudosItem, HeadlineSticky, DateElement, IconPrint, PrintOption, PrintOptionItem, ShowMore } from "./KudosListStyled";
+import {
+    KudosItem,
+    HeadlineSticky,
+    DateElement,
+    IconPrint,
+    PrintOption,
+    PrintOptionItem,
+    ShowMore,
+    WraperVote,
+    VoteNumber,
+    Vote,
+    TextKudos,
+} from "./KudosListStyled";
 
 import * as moment from "moment";
 import { host } from "src/endpoints";
@@ -76,15 +85,22 @@ class KudosList extends React.Component<Props, State> {
     private renderKudos = (): JSX.Element[] | null => {
         return this.props.context && this.props.context.kudos
             ? this.props.context.kudos.kudosList.map(k => {
+                  const hasBeenVoted = !!k.voters.find(v => v.uuid === this.props.context!.profile!.uuid);
                   return (
                       <KudosItem key={Math.random()}>
                           <DateElement>{moment(k.timestamp).fromNow()}</DateElement>
-                          <div dangerouslySetInnerHTML={{ __html: k.description }}/>
+                          <TextKudos dangerouslySetInnerHTML={{ __html: k.description }} />
+                          <WraperVote>
+                              <VoteNumber>{k.voters.length}</VoteNumber>
+                              <Vote fiilled={hasBeenVoted} onClick={() => this.vote(k.kuid)} />
+                          </WraperVote>
                       </KudosItem>
                   );
               })
             : null;
     };
+
+    private vote = (kuid: string) => this.props.context!.voteForKudos(kuid, this.props.context!.profile!.uuid, this.state.pageCounter);
 }
 
 export const KudosListComponent = wrapperComponent(KudosList);

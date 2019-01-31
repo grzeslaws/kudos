@@ -1,13 +1,20 @@
 import styled from "../../theme";
 import { H2 } from "src/theme/elements/Headings";
 import IconPrintSvg from "src/assets/images/icon-print.svg";
-import { Button } from 'src/theme/objects/Buttons';
+import IconVoteFilledSvg from "src/assets/images/icon-vote-filled.svg";
+import IconVoteUnfilledSvg from "src/assets/images/icon-vote-unfilled.svg";
+import { Button } from "src/theme/objects/Buttons";
+
+interface IVote {
+    fiilled: boolean;
+}
 
 export const KudosItem = styled.div`
     font-size: ${props => props.theme.fonts.sizeBase};
     font-weight: ${props => props.theme.fonts.fontLight};
     margin-bottom: ${props => props.theme.spacing.defaultSpacing(3)};
     line-height: ${props => props.theme.fonts.lineHeightSmall};
+    position: relative;
 `;
 
 export const HeadlineSticky = styled(H2)`
@@ -25,9 +32,10 @@ export const DateElement = styled.div`
 `;
 
 export const PrintOption = styled.div`
-    background-color: ${props => props.theme.colors.colorWhite(0.4)};
+    background-color: ${props => props.theme.colors.colorWhite(1)};
     display: none;
     position: absolute;
+    z-index: 1;
     right: 0;
     top: ${props => props.theme.spacing.defaultSpacing(3)};
     font-size: ${props => props.theme.fonts.sizeMedium};
@@ -67,4 +75,37 @@ export const PrintOptionItem = styled.div`
 
 export const ShowMore = styled(Button)`
     margin-top: ${props => props.theme.spacing.defaultSpacing(4)};
+`;
+
+export const WraperVote = styled.div`
+    display: flex;
+    position: absolute;
+    right: 0;
+    top: 0;
+    align-items: center;
+`;
+
+export const VoteNumber = styled.div`
+    margin-right: ${p => p.theme.spacing.defaultSpacing(0.5)};
+    color: ${p => p.theme.colors.colorGray()};
+`;
+
+export const Vote = styled<IVote, "div">("div")`
+    position: relative;
+    width: 15px;
+    height: 12px;
+    cursor: pointer;
+    &:before {
+        content: "";
+        background-image: url(${p => (p.fiilled ? IconVoteFilledSvg : IconVoteUnfilledSvg)});
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+`;
+
+export const TextKudos = styled.div`
+    padding-right: ${p => p.theme.spacing.defaultSpacing(7)};
 `;

@@ -7,7 +7,5 @@ from kudos_api.routes import token_required
 @app.route("/api/profile", methods=["GET"])
 @token_required
 def profile(current_user):
-    print("before")
-    print("after")
 
     return jsonify({"profile": user_item(current_user)}), 200

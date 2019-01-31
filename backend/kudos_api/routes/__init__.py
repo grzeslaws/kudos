@@ -9,7 +9,6 @@ def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = None
-        print("request.headers: ", request.headers)
         if "kudosAuthToken" in request.headers:
             token = request.headers["kudosAuthToken"]
         if token == "null" or token is None:

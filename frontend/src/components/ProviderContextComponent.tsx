@@ -18,11 +18,12 @@ export interface IContext {
     fetchKudos: (page?: number) => void;
     fetchUsers: () => void;
     fetchTopPicks: () => void;
-    fetchProfile: () => void;
+    fetchProfile: (onAuth?: boolean) => void;
     createPdf: (range: string) => Promise<{ pdf_url: string }>;
     setSpinner: (setting: boolean) => void;
     addMessage: (message: Message) => void;
     removeMessage: (message: Message) => void;
+    voteForKudos: (kuid: string, uuid: string, limit: number) => void;
 }
 
 export const { Consumer, Provider } = React.createContext<IContext | null>(null);
@@ -40,20 +41,22 @@ class ProviderContextComponent extends React.Component<{}, IContext> {
         createPdf: (range = "week") => this.createPdf(range),
         fetchUsers: () => this.fetchUsers(),
         fetchTopPicks: () => this.fetchTopPicks(),
-        fetchProfile: () => this.fetchProfile(),
+        fetchProfile: (onAuth = true) => this.fetchProfile(onAuth),
         setSpinner: (setting: boolean) => this.setSpiner(setting),
         addMessage: (message: Message) => this.addMessage(message),
         removeMessage: (message: Message) => this.removeMessage(message),
+        voteForKudos: (kuid: string, uuid: string, limit: number) => this.voteForKudos(kuid, uuid, limit),
     };
 
     public render() {
-        console.log(this.state);
+        console.group(this.state);
         return (
             <>
                 <Provider value={this.state}>{this.props.children}</Provider>
             </>
         );
     }
+
     private setSpiner = (setting: boolean) => this.setState({ showSpinner: setting });
     private setAuthInProgress = (setting: boolean) => {
         this.setState({ authInProgress: setting });
@@ -69,8 +72,10 @@ class ProviderContextComponent extends React.Component<{}, IContext> {
     private createPdf = (range: string) => http(endpoints.createPdf(range));
     private fetchUsers = () => http(endpoints.users).then(json => (json ? this.setState({ users: parseArray(User, json.users) }) : null));
     private fetchTopPicks = () => http(endpoints.topPicks).then(json => (json ? this.setState({ topPicks: parseArray(User, json.top_picks) }) : null));
-    private fetchProfile = () => {
-        this.setAuthInProgress(true);
+    private fetchProfile = (onAuth = true) => {
+        if (onAuth) {
+            this.setAuthInProgress(true);
+        }
         http(endpoints.profile)
             .then(json => (json ? this.setState({ profile: parse(User, json.profile), authInProgress: false }) : null))
             .catch(() => {
@@ -85,6 +90,11 @@ class ProviderContextComponent extends React.Component<{}, IContext> {
     private removeMessage = (message: Message) => {
         this.setState({ messages: this.state.messages.filter((m: Message) => m.id !== message.id) });
     };
+    private voteForKudos = (kuid: string, uuid: string, limit: number) =>
+        http(endpoints.voteForKudos, { kuid, uuid }).then(() => {
+            this.fetchProfile(false);
+            this.fetchKudos(limit);
+        });
 }
 
 export default ProviderContextComponent;

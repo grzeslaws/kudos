@@ -1,12 +1,19 @@
 from kudos_api import db, generate_uuid
 from sqlalchemy import desc
 
-kudos_related = db.Table("kudos_related",
-                         db.Column("user_id", db.Integer, db.ForeignKey(
-                             "user.id"), primary_key=True),
-                         db.Column("kudos_id", db.Integer, db.ForeignKey(
-                             "kudos.id"), primary_key=True)
-                         )
+kudos_recipients = db.Table("kudos_recipients",
+                            db.Column("user_id", db.Integer, db.ForeignKey(
+                                "user.id"), primary_key=True),
+                            db.Column("kudos_id", db.Integer, db.ForeignKey(
+                                "kudos.id"), primary_key=True)
+                            )
+
+kudos_voters = db.Table("kudos_voters",
+                        db.Column("user_id", db.Integer, db.ForeignKey(
+                            "user.id"), primary_key=True),
+                        db.Column("kudos_id", db.Integer, db.ForeignKey(
+                            "kudos.id"), primary_key=True)
+                        )
 
 
 class User(db.Model):
@@ -18,8 +25,11 @@ class User(db.Model):
     display_name = db.Column(db.String(80), nullable=True)
     image = db.Column(db.String(300), nullable=True)
     email = db.Column(db.String(80), nullable=True)
-    kudos = db.relationship("Kudos", secondary=kudos_related,
-                            backref=db.backref("users", lazy="subquery"))
+    kudos_given = db.relationship("Kudos", backref="author", lazy=True)
+    kudos_received = db.relationship("Kudos", secondary=kudos_recipients,
+                                     backref=db.backref("recipients", lazy="subquery"))
+    kudos_voters = db.relationship("Kudos", secondary=kudos_voters,
+                                   backref=db.backref("voters", lazy="subquery"))
 
     @classmethod
     def get_top_pick(cls):
@@ -43,6 +53,8 @@ class Kudos(db.Model):
     description = db.Column(db.Text, nullable=True)
     timestamp = db.Column(db.Integer, nullable=False)
     date_string = db.Column(db.String(50))
+    auid = db.Column(db.Integer, db.ForeignKey('user.uuid'),
+                     nullable=False)
 
     def order_by_timestamp(cls, page):
         return cls.query.order_by(desc(cls.timestamp)).paginate(page=page, per_page=cls.per_page)
