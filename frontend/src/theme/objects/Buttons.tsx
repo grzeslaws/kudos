@@ -60,9 +60,12 @@ const SendKudosButton = styled.button`
     bottom: -1px;
 `;
 
-const ButtonPure = styled.a`
+const ButtonPure = styled<{ show: boolean }, "a">("a")`
     ${props => baseStyfeForButton(props)}
+    transition: ${p => p.theme.transitions.transitionDefault};
 
+    opacity: ${p => (p.show ? "0.8" : "0")};
+    visibility: ${p => (p.show ? "visuble" : "hidden")};
     padding: 3px 16px 1px;
     color: ${props => props.theme.colors.colorPrimary()};
 `;

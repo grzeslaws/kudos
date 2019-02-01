@@ -15,18 +15,34 @@ export interface Props {
     context?: IContext;
 }
 
-class Layout extends React.Component<Props> {
+class Layout extends React.Component<Props, { showAddKudosButton: boolean }> {
+    public readonly state = {
+        showAddKudosButton: false,
+    };
+
+    public componentDidMount() {
+        const wrapperFull: HTMLElement | null = document.getElementById("wrapperFull");
+        if (wrapperFull) {
+            const heightOfWrapperFull = wrapperFull.getBoundingClientRect().height;
+            window.addEventListener("scroll", () => {
+                const show: boolean = window.scrollY + 48 > heightOfWrapperFull ? true : false;
+                this.setState({ showAddKudosButton: show });
+            });
+        }
+    }
     public render() {
         return (
             <WrapperMain>
                 <Navbar>
-                    <ButtonPure href="#">Give kudos</ButtonPure>
+                    <ButtonPure show={this.state.showAddKudosButton} href="#">
+                        Give kudos
+                    </ButtonPure>
                     <WrapperProfile>
                         <ProfileImage small={true} path={this.props.context!.profile!.image} />
                         <ProfileComponent />
                     </WrapperProfile>
                 </Navbar>
-                <WrapperFull>
+                <WrapperFull id="wrapperFull">
                     <AddKudosComponent />
                 </WrapperFull>
                 <Photos />
