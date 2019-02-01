@@ -28,3 +28,4 @@ frontend/yarn-error.log*
 
 frontend/package-lock.json
 *.pyc 
+backend/kudos_api/static/*.pdf
