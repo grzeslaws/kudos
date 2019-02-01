@@ -10,7 +10,7 @@ export interface Props {
 class TopPicks extends React.Component<Props> {
     public componentWillMount() {
         if (this.props.context) {
-            this.props.context.fetchTopPicks();
+            this.renderTopPicks();
         }
     }
 

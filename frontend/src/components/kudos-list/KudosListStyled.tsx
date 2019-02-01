@@ -9,6 +9,10 @@ interface IVote {
     fiilled: boolean;
 }
 
+interface IRemoveKudos {
+    show: boolean;
+}
+
 export const KudosItem = styled.div`
     font-size: ${props => props.theme.fonts.sizeBase};
     font-weight: ${props => props.theme.fonts.fontLight};
@@ -108,4 +112,20 @@ export const Vote = styled<IVote, "div">("div")`
 
 export const TextKudos = styled.div`
     padding-right: ${p => p.theme.spacing.defaultSpacing(7)};
+`;
+
+export const RemoveKudos = styled<IRemoveKudos, "span">("span")`
+    color: ${p => p.theme.colors.colorAlert()};
+    display: ${p => (p.show ? "flex" : "none")};
+    cursor: pointer;
+    transition: ${p => p.theme.transitions.transitionDefault};
+    margin-left: ${p => p.theme.spacing.defaultSpacing(2)};
+
+    &:before {
+        content: "x";
+    }
+
+    &:hover {
+        opacity: 0.8;
+    }
 `;

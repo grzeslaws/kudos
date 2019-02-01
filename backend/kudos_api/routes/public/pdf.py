@@ -1,11 +1,12 @@
 from kudos_api import app, settings
 from flask import jsonify
-from kudos_api.models import Kudos, User
+from kudos_api.models import Kudos
 from sqlalchemy import desc
 import pdfkit
 import arrow
 import os
 from kudos_api.routes import token_required
+from kudos_api.services import get_top_picks
 
 
 @app.route("/api/create_pdf/<range>", methods=["POST", "GET"])
@@ -13,9 +14,7 @@ from kudos_api.routes import token_required
 def create_pdf(current_user, range):
 
     range_timestamp = arrow.utcnow().floor(range).timestamp * 1000
-
     kudos = Kudos.query.order_by(desc(Kudos.timestamp)).filter(Kudos.timestamp > range_timestamp)
-    users = User.get_top_pick()
 
     utc = arrow.utcnow()
     local = utc.shift(hours=+1)
@@ -42,18 +41,17 @@ def create_pdf(current_user, range):
     html_kudos += '<h2>Top picks last {}</h2>'.format(range)
 
     html_kudos += '<ul class="users-list">'
-    for u in users:
+    for u in get_top_picks():
         html_kudos += '<li class="user-item">'
-        html_kudos += '<img src={} class="user-image">'.format(u.image)
+        html_kudos += '<img src={} class="user-image">'.format(u["image"])
         html_kudos += '<div class="wrapper-user-data">'
-        html_kudos += '<div class="user-name">{}</div>'.format(u.display_name)
-        html_kudos += '<div>{} kudos</div>'.format(len(u.kudos_received))
+        html_kudos += '<div class="user-name">{}</div>'.format(u["display_name"])
+        html_kudos += '<div>{} kudos</div>'.format(u["kudos_received"])
         html_kudos += '</div>'
         html_kudos += "</li>"
     html_kudos += '</ul>'
 
     html_kudos += '<div><body></html>'
-    print(html_kudos)
 
     css = os.path.join(settings.BASE_DIR + settings.STATIC_FOLDER, 'kudos_style.css')
 

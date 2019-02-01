@@ -22,6 +22,17 @@ def kudos(current_user, page):
         return jsonify({"message": "Kudos has been added!"}), 201
 
 
+@app.route("/api/remove_kudos/<kuid>")
+@token_required
+def remove_kudos(current_user, kuid):
+    if request.method == "GET":
+        kudos = Kudos.query.filter_by(kuid=kuid).first()
+        db.session.delete(kudos)
+        db.session.commit()
+
+        return jsonify({"message": "Kudos has been removed!"})
+
+
 @app.route("/api/vote_for_kudos", methods=["POST"])
 @token_required
 def vote_for_kudos(current_user):

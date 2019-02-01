@@ -1,8 +1,6 @@
 import * as React from "react";
 import { IContext } from "../ProviderContextComponent";
 import wrapperComponent from "../WrapperComponent";
-import { http } from "../../services/http";
-import { endpoints } from "../../endpoints";
 import { WrapperInput } from "../../theme/objects/Forms";
 import { ErrorMessage, Wrapper } from "./addKudosStyled";
 import { SendKudosButton } from "../../theme/objects/Buttons";
@@ -12,6 +10,7 @@ import createMentionPlugin, { defaultSuggestionsFilter } from "draft-js-mention-
 import createEmojiPlugin from "draft-js-emoji-plugin";
 import Editor from "draft-js-plugins-editor";
 import { Logos } from "src/theme/objects/Logos";
+import { PayloadKudos } from "src/models/PayloadKudos";
 export interface Props {
     context?: IContext;
 }
@@ -121,20 +120,8 @@ class AddKudos extends React.Component<Props, State> {
             return;
         }
 
-        const payload = {
-            description: this.editor.current.editor.editor.innerHTML,
-            uuid: this.getUsersKudos(),
-        };
-
-        http(endpoints.kudos(), payload).then(() => {
-            if (this.props.context) {
-                this.props.context.fetchKudos();
-                this.props.context.fetchUsers();
-                this.props.context.fetchProfile(false);
-                this.props.context.setSpinner(false);
-                this.setState({ editorState: EditorState.createEmpty() });
-            }
-        });
+        this.props.context!.addKudos(new PayloadKudos(this.editor.current.editor.editor.innerHTML, this.getUsersKudos()));
+        this.setState({ editorState: EditorState.createEmpty() });
     };
 
     private getUsersKudos = () => {
