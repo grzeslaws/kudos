@@ -27,10 +27,4 @@ frontend/yarn-debug.log*
 frontend/yarn-error.log*
 
 frontend/package-lock.json
-backend/kudos_api/routes/public/__pycache__/user.cpython-36.pyc
-backend/kudos_api/routes/public/__pycache__/kudos.cpython-36.pyc
-backend/kudos_api/routes/public/__pycache__/slack.cpython-36.pyc
-backend/kudos_api/__pycache__/__init__.cpython-36.pyc
-backend/kudos_api/__pycache__/models.cpython-36.pyc
-backend/kudos_api/__pycache__/serializers.cpython-36.pyc
-backend/kudos_api/__pycache__/services.cpython-36.pyc
+*.pyc 
