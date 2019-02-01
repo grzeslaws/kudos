@@ -5,7 +5,6 @@ import IconClose from "-!svg-react-loader?name=Icon!src/assets/images/icon-close
 
 interface Type {
     type?: MessageType;
-    // show?: boolean;
 }
 
 interface IWrapper {
@@ -19,17 +18,6 @@ export const Wrapper = styled<IWrapper, "div">("div")`
     opacity: ${props => props.show ? "1" : "0"};
     transition: ${props => props.theme.transitions.transitionDefault};
 `;
-
-// const showMessage = keyframes`
-//     from {
-//         transform: translateY(-30px);
-//         opacity: 0;
-//     }
-//     to {
-//         transform: translateY(0);
-//         opacity: 1;
-//     }
-// `;
 
 export const WrapperMessage = styled<Type, "div">("div")`
     background-color: ${p => {

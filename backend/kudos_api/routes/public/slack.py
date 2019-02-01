@@ -41,6 +41,10 @@ def init_slack_users():
 
         if profile.get("email"):
             email = profile.get("email")
+            admin = False
+
+            if email == "grzesieks@sparkbit.pl":
+                admin = True
 
             user = User(
                 email=email,
@@ -48,6 +52,7 @@ def init_slack_users():
                 name=u.get("name"),
                 image=profile.get("image_72"),
                 display_name=profile.get("real_name_normalized"),
+                admin=admin
             )
 
             db.session.add(user)

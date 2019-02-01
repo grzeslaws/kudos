@@ -13,6 +13,7 @@ import {
     VoteNumber,
     Vote,
     TextKudos,
+    RemoveKudos,
 } from "./KudosListStyled";
 
 import * as moment from "moment";
@@ -83,8 +84,10 @@ class KudosList extends React.Component<Props, State> {
     };
 
     private renderKudos = (): JSX.Element[] | null => {
-        return this.props.context && this.props.context.kudos
-            ? this.props.context.kudos.kudosList.map(k => {
+        const { kudos } = this.props.context!;
+
+        return kudos
+            ? kudos.kudosList.map(k => {
                   const hasBeenVoted = !!k.voters.find(v => v.uuid === this.props.context!.profile!.uuid);
                   return (
                       <KudosItem key={Math.random()}>
@@ -93,6 +96,10 @@ class KudosList extends React.Component<Props, State> {
                           <WraperVote>
                               <VoteNumber>{k.voters.length}</VoteNumber>
                               <Vote fiilled={hasBeenVoted} onClick={() => this.vote(k.kuid)} />
+                              <RemoveKudos
+                                  show={this.props.context!.profile!.admin!}
+                                  onClick={() => this.props.context!.removeKudos(k.kuid, this.state.pageCounter)}
+                              />
                           </WraperVote>
                       </KudosItem>
                   );

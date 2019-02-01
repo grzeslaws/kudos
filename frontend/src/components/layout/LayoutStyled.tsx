@@ -2,6 +2,7 @@ import styled from "../../theme";
 import { H2 } from "../../theme/elements/Headings";
 import { media } from "../../theme/tools/utils";
 import photos from "src/assets/images/photos.jpg";
+import { WrapperPosition } from '../profile/ProfileStyled';
 
 interface IColumn {
     width: "1" | "2" | "3" | "4";
@@ -105,4 +106,12 @@ export const Column = styled<IColumn, "div">("div")`
         padding-left: unset;
         padding-right: unset;
     `}
+`;
+
+export const WrapperProfile = styled.div`
+    &:hover ${WrapperPosition} {
+        opacity: 1;
+        display: block;
+        visibility: visible;
+    }
 `;

@@ -1,6 +1,17 @@
 import styled from "../../theme";
 import { Button } from "src/theme/objects/Buttons";
 
+export const WrapperPosition = styled.div`
+    position: absolute;
+    top: 37px;
+    right: ${p => p.theme.spacing.defaultSpacing(5)};
+    opacity: 0;
+    padding-top: 10px;
+    transition: ${p => p.theme.transitions.transitionDefault};
+    transition-delay: 100ms;
+    visibility: hidden;
+`;
+
 export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -9,9 +20,6 @@ export const Wrapper = styled.div`
     color: ${p => p.theme.colors.colorBlack()};
     padding: 20px;
     line-height: ${p => p.theme.fonts.lineHeightSmall};
-    position: absolute;
-    top: ${p => p.theme.spacing.defaultSpacing(6)};
-    right: ${p => p.theme.spacing.defaultSpacing(5)};
 `;
 
 export const ProfileName = styled.h3`

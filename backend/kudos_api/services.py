@@ -1,6 +1,7 @@
 from kudos_api import db
 from kudos_api.models import User, Kudos
 from datetime import timezone, datetime
+from kudos_api.serializers import user_item
 
 
 def add_kudos(description, recipients, current_user):
@@ -14,3 +15,10 @@ def add_kudos(description, recipients, current_user):
 
     db.session.add(kudos)
     db.session.commit()
+
+
+def get_top_picks():
+    ul = [user_item(u) for u in User.get_all()]
+    sorted_ul = sorted(ul, key=lambda k: k["kudos_received"], reverse=True)
+    sorted_ul_without_zero = [u for u in sorted_ul if u["kudos_received"] > 0]
+    return sorted_ul_without_zero[0:3]

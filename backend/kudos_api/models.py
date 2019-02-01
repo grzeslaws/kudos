@@ -25,6 +25,7 @@ class User(db.Model):
     display_name = db.Column(db.String(80), nullable=True)
     image = db.Column(db.String(300), nullable=True)
     email = db.Column(db.String(80), nullable=True)
+    admin = db.Column(db.Boolean, nullable=True)
     kudos_given = db.relationship("Kudos", backref="author", lazy=True)
     kudos_received = db.relationship("Kudos", secondary=kudos_recipients,
                                      backref=db.backref("recipients", lazy="subquery"))

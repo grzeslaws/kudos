@@ -18,6 +18,12 @@ const ProfileImage = styled<IImageProfile, "div">("div")`
         }
     }}
     border-radius: ${p => p.theme.radius.oval};
+    transition: ${p => p.theme.transitions.transitionDefault};
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.8;
+    }
 `;
 
 export { ProfileImage };

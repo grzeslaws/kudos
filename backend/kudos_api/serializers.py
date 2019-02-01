@@ -6,6 +6,7 @@ def user_item(u):
     user_item["name"] = u.name
     user_item["email"] = u.email
     user_item["image"] = u.image
+    user_item["admin"] = u.admin
     user_item["kudos_received"] = len(u.kudos_received)
     user_item["kudos_given"] = len(u.kudos_given)
     return user_item

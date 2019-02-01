@@ -1,7 +1,7 @@
 import * as React from "react";
 import { IContext } from "../ProviderContextComponent";
 import wrapperComponent from "../WrapperComponent";
-import { Navbar, WrapperFull, Photos, WrapperColumns, Column } from "src/components/layout/LayoutStyled";
+import { Navbar, WrapperFull, Photos, WrapperColumns, Column, WrapperProfile } from "src/components/layout/LayoutStyled";
 import { ButtonPure } from "src/theme/objects/Buttons";
 import { AddKudosComponent } from "../add-kudos/AddKudosComponent";
 import { ProfileComponent } from "../profile/ProfileComponent";
@@ -15,21 +15,16 @@ export interface Props {
     context?: IContext;
 }
 
-interface State {
-    showProfile: boolean;
-}
-
-class Layout extends React.Component<Props, State> {
-    public readonly state = {
-        showProfile: false,
-    };
+class Layout extends React.Component<Props> {
     public render() {
         return (
             <WrapperMain>
                 <Navbar>
                     <ButtonPure href="#">Give kudos</ButtonPure>
-                    <ProfileImage onMouseOver={this.showProfile} small={true} path={this.props.context!.profile!.image} />
-                    <ProfileComponent show={this.state.showProfile} />
+                    <WrapperProfile>
+                        <ProfileImage small={true} path={this.props.context!.profile!.image} />
+                        <ProfileComponent />
+                    </WrapperProfile>
                 </Navbar>
                 <WrapperFull>
                     <AddKudosComponent />
@@ -49,8 +44,6 @@ class Layout extends React.Component<Props, State> {
             </WrapperMain>
         );
     }
-
-    private showProfile = () => this.setState({ showProfile: true });
 }
 
 export const LayoutComponent = wrapperComponent(Layout);

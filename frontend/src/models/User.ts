@@ -10,8 +10,6 @@ export class User {
         @Field("image", true) public image?: string,
         @Field("name", true) public name?: string,
         @Field("email", true) public email?: string,
+        @Field("admin", true) public admin?: boolean,
     ) {}
 }
-
-
-

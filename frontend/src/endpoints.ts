@@ -3,6 +3,7 @@ export const baseUrl = `${host}/api`;
 
 export const endpoints = {
     kudos: (page = 1) => `${baseUrl}/kudos/${page}`,
+    removeKudos: (kuid: string) => `${baseUrl}/remove_kudos/${kuid}`,
     users: `${baseUrl}/all_users`,
     topPicks: `${baseUrl}/top_picks`,
     login: `${baseUrl}/login`,
