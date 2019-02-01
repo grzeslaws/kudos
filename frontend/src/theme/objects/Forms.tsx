@@ -10,7 +10,7 @@ const WrapperInput = styled<IWrapperInputText, "div">("div")`
     position: relative;
     border: 1px solid ${props => (props.focused ? props.theme.colors.colorPrimary() : props.theme.colors.colorGrayLight())};
     border-radius: ${props => props.theme.radius.defaultRadius};
-    padding: 6px 50px 6px 8px;
+    padding: 6px 80px 6px 8px;
     margin-bottom: ${props => props.theme.spacing.defaultSpacing(1)};
     transition: ${props => props.theme.transitions.transitionDefault};
     text-align: left;

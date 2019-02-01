@@ -4,6 +4,7 @@ from kudos_api.models import Kudos, User
 from kudos_api.serializers import kudos_item
 from kudos_api.services import add_kudos
 from sqlalchemy import desc
+from kudos_api.services import init_slack_users
 from kudos_api.routes import token_required
 
 
@@ -11,6 +12,7 @@ from kudos_api.routes import token_required
 @token_required
 def kudos(current_user, page):
     if request.method == "GET":
+        init_slack_users()
         kudos = Kudos.query.order_by(desc(Kudos.timestamp)).limit(10 * page).all()
 
         return jsonify({

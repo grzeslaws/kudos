@@ -1,7 +1,39 @@
-from kudos_api import db
+from kudos_api import db, sc
 from kudos_api.models import User, Kudos
 from datetime import timezone, datetime
 from kudos_api.serializers import user_item
+from flask import jsonify
+
+
+def init_slack_users():
+
+    db.session.query(User).delete()
+    db.session.commit()
+
+    for u in sc.api_call("users.list")["members"]:
+
+        profile = u["profile"]
+
+        if profile.get("email"):
+            email = profile.get("email")
+            admin = False
+
+            if email == "grzesieks@sparkbit.pl":
+                admin = True
+
+            user = User(
+                email=email,
+                uuid=u.get("id"),
+                name=u.get("name"),
+                image=profile.get("image_72"),
+                display_name=profile.get("real_name_normalized"),
+                admin=admin
+            )
+
+            db.session.add(user)
+
+    db.session.commit()
+    return jsonify({"message": "User has been initilized!"})
 
 
 def add_kudos(description, recipients, current_user):
