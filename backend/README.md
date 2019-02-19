@@ -1,8 +1,8 @@
 # Kudos backend
 
 ##### Introduction to run localy
-* init virtual environment `virtualenv venv`
-* activate virtual environment `source venv/bin/activate`
+* init virtual environment for python 3 `python3 -m venv <myenvname>`
+* activate virtual environment `source <myenvname>/bin/activate`
 * install all dependencies via pip `pip install -r requirements.txt`
 * rename *.env-template* to *.env* file and fill own values 
 * export variables from *.env* file `source .env`
