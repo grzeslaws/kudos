@@ -26,7 +26,7 @@ pyflakes==2.0.0
 PyJWT==1.7.1
 python-dateutil==2.7.5
 python-dotenv==0.10.1
-reportlab==3.5.13
+reportlab==3.5.55
 requests==2.21.0
 rsa==4.0
 six==1.12.0
